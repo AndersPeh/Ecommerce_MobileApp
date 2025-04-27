@@ -1,7 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 
-export default function App() {
+export default function MyCart() {
   return (
     <View style={styles.container}>
       <Text>Coming Soon!</Text>
