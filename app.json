@@ -1,0 +1,28 @@
+{
+  "expo": {
+    "name": "Fake_Store",
+    "slug": "Fake_Store",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/splashScreen1.png",
+    "userInterfaceStyle": "light",
+    "newArchEnabled": true,
+    "splash": {
+      "image": "./assets/splashScreen1.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/splashScreen1.png",
+        "backgroundColor": "#ffffff"
+      }
+    },
+    "web": {
+      "favicon": "./assets/splashScreen1.png"
+    }
+  }
+}
