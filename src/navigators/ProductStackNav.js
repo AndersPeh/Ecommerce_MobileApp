@@ -1,29 +1,29 @@
 import { createStackNavigator } from "@react-navigation/stack";
 import ProductList from "../screens/ProductList";
 import ProductDetail from "../screens/ProductDetail";
-import Category from "../screens/Category";
+import Categories from "../screens/Categories";
 
 const Stack = createStackNavigator();
 
 export default function ProductStackNav() {
   return (
-// the first screen defined within a navigator automatically becomes the default screen.
+// first screen to show up when routed to ProductStackNav is Categories
     <Stack.Navigator
-      initialRouteName='Category' 
-      screenOptions={{
-        headerTitleAlign:'center',
-        headerTitleStyle:{
-          fontWeight:'bold'
-        },
-        headerStyle: {
-          backgroundColor: '#1A3D4F',
-        },
-        headerTintColor: '#F5E8C7',
-      }}
+// To ensure consistent header style in both Tab and Stack Navigators.
+      initialRouteName='Categories' 
+
     >
-      <Stack.Screen name="Category" component={Category} />
-      <Stack.Screen name="ProductList" component={ProductList} />
-      <Stack.Screen name="ProductDetail" component={ProductDetail} />
+{/* When user clicks a category on Categories screen, the user will be routed
+to ProductList screen. When user clicks a Product in ProductList screen, the user will
+be routed to ProductDetail screen. so it is necessary to put 3 of them in Stack Screen.
+*/}
+      <Stack.Screen name="Categories" component={Categories}
+      options={{ headerShown: false }}/>
+      <Stack.Screen name="ProductList" component={ProductList}
+      options={{ headerShown: false }}/>
+      <Stack.Screen name="ProductDetail" component={ProductDetail}
+      options={{ headerShown: false }}/>
+
     </Stack.Navigator>
   );
 }

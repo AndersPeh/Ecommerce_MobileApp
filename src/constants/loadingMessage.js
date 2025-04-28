@@ -9,7 +9,7 @@ export default {
     text:{
         marginTop: 10,
         color: '#F5E8C7',
-        fontSize: 20,
+        fontSize: 30,
         fontWeight:"900",
     },
 }

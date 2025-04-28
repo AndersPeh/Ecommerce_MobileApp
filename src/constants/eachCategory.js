@@ -14,9 +14,25 @@ export default {
     },
     text:
     {    
-        fontSize: 30,
+        fontSize: 25,
         textTransform: 'capitalize',
         color:"black",
         fontWeight:"900",
+    },
+    titleContainer: {
+        width: '100%',
+        paddingVertical: 25,
+        backgroundColor: '#091235', 
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginBottom: 20,
+        marginTop: 60,
+        elevation: 3,
+    },
+    titleText: {
+        fontSize: 30,
+        fontWeight: 'bold',
+        color: '#F5E8C7', 
+        textTransform: 'capitalize',
     },
 }

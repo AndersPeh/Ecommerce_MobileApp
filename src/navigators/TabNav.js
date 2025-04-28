@@ -6,21 +6,25 @@ import UserProfile from "../screens/UserProfile";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
 const Tab = createBottomTabNavigator();
+
+// To display bottom tab navigator in following screens.
 export default function TabNav() {
 
   return (
     <Tab.Navigator
         screenOptions={({ route }) => ({
+// Header style of each Tab screen.
             headerTitleAlign: 'center',
             headerTitleStyle: {
               fontWeight: 'bold'
             },
             headerStyle: {
-                backgroundColor: '#1A3D4F',
+                backgroundColor: '#091235',
             },
             headerTintColor: '#F5E8C7',
             tabBarIcon: ({ focused, color, size }) => {
             let iconName;
+// When it is focused, show solid icon. Else, show icon with outline only, hollow body.
             if (route.name === "Products") {
                 iconName = focused ? "home" : "home-outline";
             } else if (route.name === "My Cart") {
@@ -32,14 +36,20 @@ export default function TabNav() {
             }
             return <Ionicons name={iconName} size={size} color={color} />;
             },
+// match Bottom Tab Navigator theme with Header theme to ensure consistency.
+            tabBarStyle: {
+              backgroundColor: '#091235', 
+              borderTopWidth: 0,
+            },
+            // selected tab will become gold.
+            tabBarActiveTintColor: "#FFBF00", 
+            tabBarInactiveTintColor: "white", 
         })}
-            tabBarOptions={{
-            activeTintColor: "blue",
-            inactiveTintColor: "gray",
-            }}
     >
       <Tab.Screen
         name="Products"
+// The initial route of ProductStackNav is Category screen, which means user will see Categories
+// when the app is first opened.
         component={ProductStackNav}
         options={{ headerShown: false }}
       />
