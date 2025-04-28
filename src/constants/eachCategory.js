@@ -1,4 +1,4 @@
-// for category item and text.
+// for category related styles.
 export default {
     categoryItem:
     {
@@ -26,7 +26,7 @@ export default {
         alignItems: 'center',
         justifyContent: 'center',
         marginBottom: 20,
-        marginTop: 60,
+        // marginTop: 60,
         elevation: 3,
     },
     titleText: {

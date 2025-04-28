@@ -49,6 +49,7 @@ export default function Categories({navigation}) {
 
   return (
     <View style={pageBackground}>
+{/* title text */}
        <View style={eachCategory.titleContainer}>
          <Text style={eachCategory.titleText}>Categories</Text>
        </View>

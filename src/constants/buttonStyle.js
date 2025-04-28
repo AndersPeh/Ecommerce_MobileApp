@@ -4,10 +4,17 @@ export default {
         marginRight: 5,
     },
     backButton:{
-        position: 'absolute', 
         bottom: 10, 
         alignSelf: 'center', 
         backgroundColor: '#D1F6FF',
+        marginBottom: 8,
+        position: 'absolute', 
+    },
+    detailButtons:{
+        backgroundColor: '#D1F6FF',
+        width:"45%",
+        marginHorizontal:5,
+        height:45,
         marginBottom: 8,
     },
     container:{
@@ -31,5 +38,13 @@ export default {
         color:"black",
         fontFamily: "serif",
         
+    },
+    twoButtons_sameRow:{
+        position: 'absolute',
+        bottom: 10,
+        flexDirection:'row',
+        justifyContent:'space-evenly',
+        position: 'absolute', 
+
     },
 }

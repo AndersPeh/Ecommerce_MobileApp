@@ -15,10 +15,11 @@ export default function ProductList({navigation, route}) {
   const categorySelected = route.params?.category;
 
   // Make a back icon.
-  const backIcon = <Ionicons name="backspace-outline"
-  size={25}
-  color="#004D66"
-  style={buttonStyle.iconStyle}/>;
+  const backIcon = <Ionicons name="backspace"
+    size={25}
+    color="#004D66"
+    style={buttonStyle.iconStyle}
+  />;
 
   useEffect(()=>{
     async function getProducts() {
@@ -39,7 +40,7 @@ export default function ProductList({navigation, route}) {
           title: product.title,
           price: product.price
         }));
-// update Products from empty {} to selected category products.
+// update Products from empty [] to selected category products.
         setProducts(productsContent);
 // display error message including custom error message made.
       } catch (err) {
@@ -83,6 +84,7 @@ export default function ProductList({navigation, route}) {
 
   return (
     <View style={pageBackground}>
+{/* title text shows category selected */}
        <View style={eachProduct.titleContainer}>
          <Text style={eachProduct.titleText}>{categorySelected}</Text>
        </View>        
@@ -90,7 +92,7 @@ export default function ProductList({navigation, route}) {
         <FlatList
 // data takes products passed from getProducts();.
           data={products}
-// renderItem takes renderProduct function to display product one by one using Task style.
+// renderItem takes renderProduct function to display product one by one.
           renderItem={renderProduct}
 // keyExtractor generates unique keys for each item to update only item that changes.
           keyExtractor={(item) =>item.id.toString()}

@@ -1,4 +1,4 @@
-// To export StyleSheet to ProductList.
+// Product related styles.
 export default {
     price:{
         fontSize:14,
@@ -49,7 +49,6 @@ export default {
         alignItems: 'center',
         justifyContent: 'center',
         marginBottom: 20,
-        marginTop: 60,
         elevation: 3,
     },
     titleText: {
