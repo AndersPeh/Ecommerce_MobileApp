@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, StatusBar, ActivityIndicator, Pressable, Image, ScrollView } from 'react-native';
+import { Text, View, StatusBar, ActivityIndicator, Pressable, Image, ScrollView, Alert } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import loadingMessage from '../constants/loadingMessage';
 import pageBackground from '../constants/pageBackground';
@@ -6,13 +6,19 @@ import SmallButton from '../components/SmallButton';
 import Ionicons from "react-native-vector-icons/Ionicons";
 import buttonStyle from '../constants/buttonStyle';
 import detailsStyle from '../constants/detailsStyle';
+import { useDispatch } from 'react-redux';
+import {addProduct} from '../redux/cartSlice';
 
 export default function ProductDetail({navigation, route}) {
 // default details is null.
   const [details, setDetails] = useState(null);
 // true by default, false after finish loading.
   const [loading, setLoading] = useState(true);
+// for getting product selected information passed from ProductList screen.
   const productSelected = route.params?.product;
+// simplify useDispatch for later use.
+  const dispatch = useDispatch();
+
 
   // Make a back icon.
   const backIcon = <Ionicons name="backspace"
@@ -65,6 +71,21 @@ export default function ProductDetail({navigation, route}) {
     );
   }
 
+  const addProductToCart = () => {
+    if(details){
+// dispatch the addItem action with product details which will be inside action.payload.
+      dispatch(addProduct({
+        id: details.id,
+        title: details.title,
+        price: details.price,
+        image: details.image,
+        })
+      );
+// show success message after adding to cart.
+      Alert.alert(`Great choice!`, `You have added ${details.title} to your shopping cart!`);
+    }
+  };
+
   return (
     <View style={pageBackground}>
 
@@ -101,7 +122,7 @@ export default function ProductDetail({navigation, route}) {
 {/* Add to Cart*/}
         <SmallButton 
             label="Add to Cart" 
-            func= {() =>navigation.goBack()}
+            func= {addProductToCart}
             icon={cartIcon}
             style={buttonStyle.detailButtons}
         ></SmallButton>

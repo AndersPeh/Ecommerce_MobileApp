@@ -19,7 +19,7 @@ export default function SmallButton({label, func=()=>{}, icon, style={}}){
 {/* Display label of the Button defined in whichever file that uses it. */}
             <View style={buttonStyle.content}>
                 {icon}
-                <Text style={buttonStyle.text}>{label}</Text>
+                {label?<Text style={buttonStyle.text}>{label}</Text>:null}
             </View>
         </Pressable>
     );

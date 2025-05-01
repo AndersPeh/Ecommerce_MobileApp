@@ -3,6 +3,14 @@ export default {
     iconStyle:{
         marginRight: 5,
     },
+    checkoutButton:{
+        bottom: 10, 
+        alignSelf: 'center', 
+        backgroundColor: '#D1F6FF',
+        marginBottom: 8,
+        position: 'absolute', 
+        width:'40%',
+    },
     backButton:{
         bottom: 10, 
         alignSelf: 'center', 

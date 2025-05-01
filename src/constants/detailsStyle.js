@@ -78,5 +78,6 @@ export default {
         color:"black",
         fontFamily: "serif",
         lineHeight:20,
+        textAlign:'justify',
     },
 }

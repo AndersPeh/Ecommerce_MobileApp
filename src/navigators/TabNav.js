@@ -4,11 +4,18 @@ import MyOrders from "../screens/MyOrders";
 import MyCart from "../screens/MyCart";
 import UserProfile from "../screens/UserProfile";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import { useSelector } from "react-redux";
 
 const Tab = createBottomTabNavigator();
 
 // To display bottom tab navigator in following screens.
 export default function TabNav() {
+
+// get cart items to calculate total quantity for the badge
+  const cartProducts = useSelector((state)=> state.cart.products);
+  const totalQuantity = cartProducts.reduce((sum, eachProduct)=>
+    sum+=eachProduct.quantity
+  ,0);
 
   return (
     <Tab.Navigator
@@ -53,7 +60,15 @@ export default function TabNav() {
         component={ProductStackNav}
         options={{ headerShown: false }}
       />
-      <Tab.Screen name="My Cart" component={MyCart} />
+      <Tab.Screen name="My Cart" 
+        component={MyCart} 
+        options={{
+// only show badge when there is quantity
+          tabBarBadge: totalQuantity > 0? totalQuantity:null,
+          tabBarBadgeStyle:{backgroundColor:"red", colour:"white"},
+          headerShown: false
+        }}
+      />
       <Tab.Screen name="My Orders" component={MyOrders} />
       <Tab.Screen name="User Profile" component={UserProfile} />
 
