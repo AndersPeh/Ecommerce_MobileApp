@@ -8,7 +8,7 @@ import cartStyle from '../constants/cartStyle';
 import pageBackground from '../constants/pageBackground';
 
 export default function MyCart({navigation}) {
-// exactly how it was define in store.js and cartSlice, cart, an object with items array
+// exactly how it was define in store.js and cartSlice. cart is an object with items array
 // useSelector subscribes to the store and gets latest data from the store about cart.
   const cartProducts = useSelector((state) => state.cart.products);
 
@@ -59,7 +59,10 @@ export default function MyCart({navigation}) {
           <Text style={cartStyle.productPrice}>Price: ${item.price.toFixed(2)} per item</Text>
         </View>
         <View style={cartStyle.quantityAdjustRow}>
-  {/* action.payload will contain item.id passed from here to cartSlice and run on store.js */}
+{/* action.payload will contain item.id passed from here to stores.js 
+then to cartSlice
+Only need item.id for increase quantity, decrease quantity and remove product*/}
+
           <SmallButton 
             func= {() =>dispatch(increaseQuantity({id:item.id}))}
             icon={increaseIcon}

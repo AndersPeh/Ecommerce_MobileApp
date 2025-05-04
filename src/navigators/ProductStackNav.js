@@ -9,7 +9,6 @@ export default function ProductStackNav() {
   return (
 // first screen to show up when routed to ProductStackNav is Categories
     <Stack.Navigator
-// To ensure consistent header style in both Tab and Stack Navigators.
       initialRouteName='Categories' 
 
     >

@@ -16,7 +16,7 @@ export default function ProductDetail({navigation, route}) {
   const [loading, setLoading] = useState(true);
 // for getting product selected information passed from ProductList screen.
   const productSelected = route.params?.product;
-// simplify useDispatch for later use.
+// simplify useDispatch for later use to control state.
   const dispatch = useDispatch();
 
 
@@ -73,7 +73,8 @@ export default function ProductDetail({navigation, route}) {
 
   const addProductToCart = () => {
     if(details){
-// dispatch the addItem action with product details which will be inside action.payload.
+// dispatch the addItem action with product details which will be inside action.payload
+// to store.js then to cartSlice.
       dispatch(addProduct({
         id: details.id,
         title: details.title,

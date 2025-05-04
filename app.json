@@ -4,25 +4,25 @@
     "slug": "Fake_Store",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/splashScreen1.png",
+    "icon": "./assets/splashScreen.png",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
     "splash": {
-      "image": "./assets/splashScreen1.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "image": "./assets/splashScreen.png",
+      "resizeMode": "repeat",
+      "backgroundColor": "#FFDAB9"
     },
     "ios": {
       "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/splashScreen1.png",
-        "backgroundColor": "#ffffff"
+        "foregroundImage": "./assets/splashScreen.png",
+        "backgroundColor": "grey"
       }
     },
     "web": {
-      "favicon": "./assets/splashScreen1.png"
+      "favicon": "./assets/splashScreen.png"
     }
   }
 }

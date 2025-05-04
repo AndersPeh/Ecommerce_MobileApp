@@ -11,9 +11,9 @@ export const cartSlice = createSlice({
 // Each function in reducers of createSlice have state and action.
 // state is the current state of this slice (cartSlice) which is an object with products as []
 // which means empty shopping cart in the beginning.
-// action is an object with information to update the state. 
+// reducers is an object with information to update the state. 
     reducers: {
-// Action for user to add a product to the cart.
+// reducer for user to add a product to the cart.
         addProduct: (state, action) =>{
 // action usually consists of type and payload. Type is automatically generated
 // based on slice and reducer name. For this action, the action.type will be cart/addProduct.
@@ -75,8 +75,10 @@ export const cartSlice = createSlice({
         },
     },
 });
-// Export these actions for dispatching later. they will become the logic of buttons in screens.
+// Export these actions for dispatching later. they will become the logic of buttons in 
+// ProductDetail and MyCart screens.
 export const { addProduct, increaseQuantity, decreaseQuantity, removeProduct } = cartSlice.actions;
 // Export the reducer for adding it to the store. The store will use it to define how the state
 // for the cartSlice is managed.
+// it will be imported as cartReducer later because export default means it can be imported as any name.
 export default cartSlice.reducer;
