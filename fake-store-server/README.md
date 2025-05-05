@@ -2,11 +2,7 @@
 
 ## Overview
 
-`fake-store-server` is a RESTful API server designed to support the `fake-store` React Native application for the Mobile Application Development (MAD) course. It simulates backend functionalities for an e-commerce platform, including user management, product browsing, and order processing.
-
-## Objective
-
-The purpose of this server is to provide MAD course students with a real-world experience of interacting with backend APIs. Students will learn how to connect a React Native app to a backend server, handle API requests, manage user authentication, and perform CRUD operations.
+`fake-store-server` is a RESTful API server designed to support the `fake-store` React Native application. It simulates backend functionalities for an e-commerce platform, including user management, product browsing, and order processing.
 
 ## Getting Started
 
@@ -57,14 +53,6 @@ For detailed API endpoints and their specifications, please refer to the Swagger
 ## Debug Endpoints
 
 This server includes debug endpoints (`/users` and `/orders`) for educational purposes. These endpoints are not protected and should not be used in production or the `fake-store` client app.
-
-## Assignment Integration
-
-Students are expected to integrate their `fake-store` React Native app with this server to complete the assignment tasks. Ensure to configure the app to point to the correct server URL.
-
-## Submission Guidelines for Students
-
-Students should focus on the client-side development of the `fake-store` app, consuming the APIs provided by `fake-store-server`. The server is provided as-is for the assignment and does not require modifications.
 
 ## License
 
