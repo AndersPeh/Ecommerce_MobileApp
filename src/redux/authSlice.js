@@ -16,7 +16,7 @@ export const authSlice = createSlice({
 // which means no user, no token and not authenticated in the beginning.
 // reducers is an object with information to update the state. 
         reducers: {
-            signInSucess: (state, action) => {
+            signInSuccess: (state, action) => {
 // update user and token passed from action.payload of UserProfile screen.
                 state.user = action.payload.user;
                 state.token = action.payload.token;
@@ -24,7 +24,7 @@ export const authSlice = createSlice({
                 state.isAuthenticated = true;
             },
 // same logic as signInSuccess.
-            signUpSucess: (state, action) => {
+            signUpSuccess: (state, action) => {
 // update user and token passed from action.payload of UserProfile screen.
                 state.user = action.payload.user;
                 state.token = action.payload.token;
@@ -39,7 +39,7 @@ export const authSlice = createSlice({
 // isAuthenticated is updated to false after logging out.
                 state.isAuthenticated = false;
             },
-            updateUserSucess: (state, action) =>{
+            updateUserSuccess: (state, action) =>{
 // after updating user profile, change the user name because only name and password can be updated.
 // because React Native is client side, it should not store password.
 // after the server takes the new password provided by UserProfile screen, it verifies the user's token,
@@ -52,7 +52,7 @@ export const authSlice = createSlice({
         },
 });
 // export these actions to UserProfile screen to dispatch them later. they will be used as logic of buttons.
-export const {signInSucess, signUpSucess, signOut, updateUserSucess} = authSlice.actions;
+export const {signInSuccess, signUpSuccess, signOut, updateUserSuccess} = authSlice.actions;
 // export to store.js to include this reducer so store knows how to manage state of authSlice using reducer.
 // it will be imported as authReducer later because export default means it can be imported as any name.
 export default authSlice.reducer;

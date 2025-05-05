@@ -6,14 +6,36 @@ import SmallButton from '../components/SmallButton';
 import buttonStyle from '../constants/buttonStyle';
 import cartStyle from '../constants/cartStyle';
 import pageBackground from '../constants/pageBackground';
+import { saveCart } from '../redux/cartThunks';
+import { useEffect } from 'react';
 
 export default function MyCart({navigation}) {
 // exactly how it was define in store.js and cartSlice. cart is an object with items array
 // useSelector subscribes to the store and gets latest data from the store about cart.
   const cartProducts = useSelector((state) => state.cart.products);
 
+  const token = useSelector((state)=>state.auth.token);
+
 // to simplify useDispatch for later use.
   const dispatch = useDispatch();
+
+  useEffect(()=>{
+// cant save without token or cartProducts
+    if(!token || !cartProducts){
+      console.log("MyCart: Both Token and cartProducts are required.");
+      return;
+    }
+// whenever cartProducts or token change, dispatch saveCart with 
+// latest cartProducts and token from store.js
+    dispatch(saveCart({products: cartProducts, token}))
+      .unwrap()
+      .catch(e=>{
+        console.error("MyCart: Failed to save cart:", e);
+      });
+
+// useEffect is triggered when there is changes in cartProducts or token.
+// dispatch is included in the dependency to use it inside useEffect.
+  }, [cartProducts, token, dispatch]);
 
   // Make Increase icon.
   const increaseIcon = <Ionicons name="add-circle"
@@ -49,6 +71,9 @@ export default function MyCart({navigation}) {
     sum+eachProduct.price*eachProduct.quantity
   ,0);
 
+
+
+
 // render each product in the cart
   const renderCartProduct = ({item}) => (
     <View style={cartStyle.cartProductRow}>
@@ -59,6 +84,7 @@ export default function MyCart({navigation}) {
           <Text style={cartStyle.productPrice}>Price: ${item.price.toFixed(2)} per item</Text>
         </View>
         <View style={cartStyle.quantityAdjustRow}>
+          
 {/* action.payload will contain item.id passed from here to stores.js 
 then to cartSlice
 Only need item.id for increase quantity, decrease quantity and remove product*/}
@@ -88,7 +114,7 @@ Only need item.id for increase quantity, decrease quantity and remove product*/}
   );
 
 // when user hasn't added any product to the cart.
-  if(cartProducts.length===0){
+  if(cartProducts.length===0 || !cartProducts){
     return (
       <View style={pageBackground}>
         <View style={cartStyle.titleContainer}>

@@ -73,11 +73,24 @@ export const cartSlice = createSlice({
 // remove the product from products array by creating a shallow copy with filter.
             state.products = state.products.filter(product => product.id !== id);
         },
+
+// when user logs in, restore user's cart if any. If no product, leave it empty.
+        setCart: (state, action) => {
+// action.payload returns array of product details object from backend.
+            state.products = action.payload || [];
+        },
+
+// when user signs out, clearCart for the next user.
+        clearCart:(state, action) => {
+            state.products=[];
+        },
     },
 });
 // Export these actions for dispatching later. they will become the logic of buttons in 
 // ProductDetail and MyCart screens.
-export const { addProduct, increaseQuantity, decreaseQuantity, removeProduct } = cartSlice.actions;
+export const { 
+    addProduct, increaseQuantity, decreaseQuantity, removeProduct, setCart, clearCart
+} = cartSlice.actions;
 // Export the reducer for adding it to the store. The store will use it to define how the state
 // for the cartSlice is managed.
 // it will be imported as cartReducer later because export default means it can be imported as any name.

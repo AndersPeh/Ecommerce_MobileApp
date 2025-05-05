@@ -6,10 +6,11 @@ import SmallButton from '../components/SmallButton';
 import Ionicons from "react-native-vector-icons/Ionicons";
 import buttonStyle from '../constants/buttonStyle';
 import detailsStyle from '../constants/detailsStyle';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {addProduct} from '../redux/cartSlice';
 
 export default function ProductDetail({navigation, route}) {
+
 // default details is null.
   const [details, setDetails] = useState(null);
 // true by default, false after finish loading.
@@ -18,6 +19,10 @@ export default function ProductDetail({navigation, route}) {
   const productSelected = route.params?.product;
 // simplify useDispatch for later use to control state.
   const dispatch = useDispatch();
+
+  const { token} = useSelector((state)=>state.auth);
+
+  const {products} = useSelector((state)=>state.cart);
 
 
   // Make a back icon.
@@ -66,13 +71,14 @@ export default function ProductDetail({navigation, route}) {
     return (
       <View style={loadingMessage.body}>
           <ActivityIndicator size="large" color="#F5E8C7" />
-          <Text style={loadingMessage.text}>Loading Details...</Text>
+          <Text style={loadingMessage.text}>Loading...</Text>
       </View>
     );
   }
 
   const addProductToCart = () => {
     if(details){
+
 // dispatch the addItem action with product details which will be inside action.payload
 // to store.js then to cartSlice.
       dispatch(addProduct({
@@ -84,6 +90,9 @@ export default function ProductDetail({navigation, route}) {
       );
 // show success message after adding to cart.
       Alert.alert(`Great choice!`, `You have added ${details.title} to your shopping cart!`);
+
+    }else{
+      Alert.alert('Add to Cart failed', data.message?data.message:'');
     }
   };
 

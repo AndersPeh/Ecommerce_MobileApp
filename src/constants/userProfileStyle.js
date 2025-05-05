@@ -19,9 +19,13 @@ export default {
         width:'80%',
         alignItems:'flex-start',
         marginBottom:30,
+        paddingHorizontal:15,
+        backgroundColor:'#D1F6FF',
+        borderRadius:8,
+        paddingVertical:15,
     },
     infoText:{
-        fontSize:16,
+        fontSize:20,
         color:'black',
         marginBottom:10,
     },
@@ -31,11 +35,11 @@ export default {
     buttonRow:{
         flexDirection:'row',
         justifyContent:'space-around',
-        width:'80%',
+        width:'85%',
     },
     formContainer:{
-        width:'85%',
-        backgroundColor:'#FFBF00',
+        width:'90%',
+        backgroundColor:'#D1F6FF',
         padding:20,
         borderRadius:8,
         alignItems:'center',
@@ -43,15 +47,16 @@ export default {
 
     },
     formTitle:{
-        fontSize:18,
+        fontSize:19,
         fontWeight:'bold',
         color:'black',
         marginBottom:15,
     },
     inputLabel:{
-        fontSize:14,
-        color:'white',
+        fontSize:16,
+        color:'black',
         alignSelf:'flex-start',
+        fontWeight:'bold',
         marginBottom:5,
         marginLeft:5,
     },
@@ -67,10 +72,9 @@ export default {
     },
     formButtonRow:{
         flexDirection:'row',
-        justifyContent:'space-between',
-        width:'85%',
+        justifyContent:'space-around',
+        width:'100%',
         marginTop:10,
-        marginBottom:10,
     },
     switchFormText:{
         color:'black',
@@ -79,27 +83,21 @@ export default {
         fontWeight:'bold',
     },
     updateContainer:{
-        flex:1,
         justifyContent:'center',
         alignItems:'center',
+        flex:1,
+        bottom:220,
     },
-    updateView:{
+    updateContainerView:{
         width:'90%',
-        alignItems:'center',
-        backgroundColor:'#FFBF00',
+        backgroundColor:'#D1F6FF',
         borderRadius:8,
-        marginTop:10,
         elevation:5,
-    },
-    updateFormContainer:{
-        width:'100%',
         padding:20,
-        borderRadius:8,
-        alignItems:'center',
-        marginTop:10,
     },
+
     updateInputLabel:{
-        fontSize:14,
+        fontSize:18,
         color:'black',
         fontWeight:'bold',
         alignSelf:'flex-start',
@@ -120,9 +118,8 @@ export default {
         flexDirection:'row',
         justifyContent:'space-around',
         width:'100%',
-        backgroundColor: '#D1F6FF',
         paddingHorizontal:10,
-        paddingVertical:10,
+        paddingTop:5,
     },
 
     

@@ -4,23 +4,15 @@ export default {
         marginRight: 5,
     },
     formButton:{
-        backgroundColor: '#D1F6FF',
-        flexDirection:'row',
+        backgroundColor: '#FFBF00',
         alignItems:'center',
         justifyContent:'center',
         paddingVertical:10,
         paddingHorizontal:15,
         borderRadius:8,
         elevation:2,
-        flex:1,
         marginHorizontal:5,
 
-    },
-    buttonText:{
-        color:'black',
-        fontSize:16,
-        fontWeight:'bold',
-        marginLeft:8,
     },
     checkoutButton:{
         bottom: 10, 
@@ -36,6 +28,8 @@ export default {
         backgroundColor: '#D1F6FF',
         marginBottom: 8,
         position: 'absolute', 
+        width:'40%',
+
     },
     detailButtons:{
         backgroundColor: '#D1F6FF',

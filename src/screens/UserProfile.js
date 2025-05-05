@@ -2,13 +2,14 @@ import { useState } from 'react';
 import { Text, View, TextInput, Alert, ActivityIndicator, StatusBar, Pressable, Modal } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import Ionicons from "react-native-vector-icons/Ionicons";
-import { signInSucess, signUpSucess, signOut,updateUserSuccess } from '../redux/authSlice';
-import SmallButton from '../components/SmallButton';
+import { signInSuccess, signUpSuccess, signOut,updateUserSuccess } from '../redux/authSlice';
+import FormButton from '../components/FormButton';
 import pageBackground from '../constants/pageBackground';
 import buttonStyle from '../constants/buttonStyle';
 import userProfileStyle from '../constants/userProfileStyle';
 import loadingMessage from '../constants/loadingMessage';
-
+import { clearCart } from '../redux/cartSlice';
+import { fetchCart } from '../redux/cartThunks';
 
 export default function UserProfile({navigation, route}) {
 // URL to run on local machine
@@ -82,32 +83,56 @@ export default function UserProfile({navigation, route}) {
     setSignUpEmail('');
     setSignUpName('');
     setSignUpPassword('');
-    setSignUpMode(false);
+    // setSignUpMode(false);
   }
 
 // clear update fields after updating or cancelling
   const clearUpdate = () =>{
-    setUpdateMode(false);
     setUpdateName('');
     setUpdatePassword('');
+    setUpdateMode(false);
+
   }
+
+  // clear everything to sign out
+  const signOutConfirmed =()=>{
+// set user and token to null. isAuthenticated to false.
+    dispatch(signOut());
+
+  // clearCart for the next user.
+    dispatch(clearCart());
+  }
+
+  // prefill user name and open update form by activating update mode.
+  const openUpdateForm = () => {
+    setUpdateName(user.name?user.name:"");
+    setUpdatePassword('');
+    setUpdateMode(true);
+  }
+
 
 // handle the event when user clicks sign in
 const signInConfirmed = async ()=> {
+
   if(!signInEmail ||!signInPassword){
       Alert.alert('Error', 'Email and Password are required.')
       return;
   }
+
 // loading starts when confirm button is pressed and all details are provided.
   setLoading(true);
+
   try {
+
 // set the POST request to the URL inside fetch() to sign in
       const response = await fetch(`${API_URL}/users/signin`,{
           method:'POST',
           headers:{
+
 // tell the server json data is being sent
               'Content-Type':'application/json',
           },
+
 // actual data sent contains an stringified object with email and password.
 // Because HTTP request only accepts string value.
           body: JSON.stringify({email:signInEmail, password:signInPassword}),
@@ -117,45 +142,70 @@ const signInConfirmed = async ()=> {
 // const checkUser = async ({ email, password }) => {
   // const query = `select * from users where email=$email and password = $password`;
       });
+
 // get the response from the POST request
       const data = await response.json();
+
 // data.status will be ok when the POST request is successful
 // when there is an error, the status should be error instead of OK.
       if (data.status==='OK'){
+
 // dispatch to store.js to put user information after check returns ok from server.
 // then store.js will run authReducer which uses the authSlice
-          dispatch(signInSucess({user:{id:data.id, name:data.name, email:data.email}, 
+          dispatch(signInSuccess({user:{id:data.id, name:data.name, email:data.email}, 
             token:data.token,}));
+            
+// retrieve cart information through cartThunks
+          if(data.token){
+            dispatch(fetchCart(data.token))
+// unwrap to catch rejection
+              .unwrap()
+// in case there is any dispatch rejection.
+              .catch(e=>console.error("Failed to fetch cart after Sign In:", e));
+          }
+
 // clear input fields after successfully sign in.
           clearSignIn();  
       }else{
           Alert.alert('Sign In failed', data.message?data.message:'');
       }
+
   } catch (e) {
+// the issue is with the server connection if the function is not working properly.
 // title is Network Error and Message is Server Connection Issue.
+
     Alert.alert('Network Error', 'Server Connection Failed.');
   } finally {
+
 // stop loading after the operation.
     setLoading(false);
   }
 };
 
+
+
 // handle the event when user clicks sign up
   const signUpConfirmed = async ()=> {
+
     if(!signUpEmail ||!signUpName|| !signUpPassword){
         Alert.alert('Error', 'Email, Name and Password are required.')
         return;
     }
+
 // loading starts when confirm button is pressed and all details are provided.
     setLoading(true);
+
     try {
+
 // set the POST request to the URL inside fetch() to sign up
       const response = await fetch(`${API_URL}/users/signup`,{
           method:'POST',
           headers:{
+
 // tell the server json data is being sent
               'Content-Type':'application/json',
           },
+
 // actual data sent contains an stringified object with email, name and password.
 // Because HTTP request only accepts string value.
           body: JSON.stringify({name:signUpName, email:signUpEmail, password:signUpPassword}),
@@ -166,41 +216,48 @@ const signInConfirmed = async ()=> {
 //   const insertUserSql = `insert into users (name,email,password) 
 //         values (?,?,?)`;
       });
+
 // get the response from the POST request
       const data = await response.json();
+
 // data.status will be ok when the POST request is successful
 // when there is an error, the status should be error instead of OK.
       if (data.status==='OK'){
+
 // dispatch to store.js to put user information after check returns ok from server.
 // then store.js will run authReducer which uses the authSlice
-          dispatch(signUpSucess({user:{id:data.id, name:data.name, email:data.email}, 
+// token is generated from middle_ware/auth.js
+          dispatch(signUpSuccess({user:{id:data.id, name:data.name, email:data.email}, 
             token:data.token,}));
+
+          // retrieve cart information through cartThunks
+          if(data.token){
+            dispatch(fetchCart(data.token))
+          // unwrap to catch rejection
+              .unwrap()
+          // in case there is any dispatch rejection.
+              .catch(e=>console.error("Failed to fetch cart after Sign In:", e));
+          }
+
 // clear input fields after successfully sign up.
           clearSignUp();
           setSignUpMode(false);  
+
       }else{
           Alert.alert('Sign Up failed', data.message?data.message:'');
       }
+
     } catch (e) {
-  // title is Network Error and Message is Server Connection Issue.
+
       Alert.alert('Network Error', 'Server Connection Failed.');
+
     } finally {
+
   // stop loading after the operation.
       setLoading(false);
     }
   };
 
-// clear everything to sign out
-  const signOutConfirmed =()=>{
-    dispatch(signOut());
-  }
-
-// prefill user name and open update form by activating update mode.
-  const openUpdateForm = () => {
-    setUpdateName(user.name?user.name:"");
-    setUpdatePassword('');
-    setUpdateMode(true);
-  }
 
 // handle the event when user clicks confirm on update form
   const updateConfirmed = async ()=> {
@@ -208,8 +265,7 @@ const signInConfirmed = async ()=> {
           Alert.alert('Error', 'New name and new password are required.')
           return;
       }
-// loading starts when confirm button is pressed and all details are provided.
-      setLoading(true);
+
       try {
 // set the POST request to the URL inside fetch() to update
           const response = await fetch(`${API_URL}/users/update`,{
@@ -232,6 +288,7 @@ const signInConfirmed = async ()=> {
 //   try {
 //     await dbRun(query, { $name: name, $password: password, $id: userID });
           });
+
 // get the response from the POST request
           const data = await response.json();
 // data.status will be ok when the POST request is successful
@@ -244,21 +301,15 @@ const signInConfirmed = async ()=> {
 
 // Title is Updated Successfully,
 // Button is OK and will route user back to UserProfile screen.
-              Alert.alert('Updated Successfully', null,
-                  [
-                      {text:'OK', onPress:()=>navigation.goBack()}
-                  ]
-              );
+              Alert.alert('Updated Successfully!');
               clearUpdate();
           }else{
             Alert.alert('Profile Update failed', data.message?data.message:'');
           }
       } catch (e) {
-// title is Network Error and Message is Server Connection Issue.
+
         Alert.alert('Network Error', 'Server Connection Issue.');
-      } finally {
-// stop loading after the operation.
-        setLoading(false);
+
       }
   };
 
@@ -278,7 +329,7 @@ const signInConfirmed = async ()=> {
           <View style={userProfileStyle.titleContainer}>
               <Text style={userProfileStyle.titleText}>User Profile</Text>
           </View>
-{/* when user is signed in, shower user profile */}
+{/* when the system has true isAuthenticated and has user object, shower user profile */}
           {isAuthenticated && user?(
             <>
               <View style={userProfileStyle.profileInfoContainer}>
@@ -292,26 +343,28 @@ const signInConfirmed = async ()=> {
               </View>
 
               <View style={userProfileStyle.buttonRow}>
-                <SmallButton 
+                <FormButton 
                   label="Update" 
                   func= {openUpdateForm}
                   icon={confirmIcon}
                   style={buttonStyle.formButton}
-                ></SmallButton>
-                <SmallButton 
+                ></FormButton>
+
+                <FormButton 
                     label="Sign Out" 
                     func= {signOutConfirmed}
                     icon={signOutIcon}
                     style={buttonStyle.formButton}
-                ></SmallButton>
+                ></FormButton>
               </View>
             </>
           ):(
 // When user is not signed in, show sign in form because signupMode is false by default.
             <View style={userProfileStyle.formContainer}>
+{/* show sign up form when sign up mode is true */}
               {signUpMode? (
                 <>
-                  <Text style={userProfileStyle.formTitle}>Sign Up</Text>
+                  <Text style={userProfileStyle.formTitle}>Sign Up as a New User</Text>
 
                   <Text style={userProfileStyle.inputLabel}>User Name</Text>
 
@@ -343,20 +396,20 @@ const signInConfirmed = async ()=> {
                     secureTextEntry
                   />
 
-                  <View style={userProfileStyle.buttonRow}>
-                    <SmallButton 
+                  <View style={userProfileStyle.formButtonRow}>
+                    <FormButton 
                       label="Clear" 
                       func= {clearSignUp}
                       icon={clearIcon}
                       style={buttonStyle.formButton}
-                    ></SmallButton>
+                    ></FormButton>
 
-                    <SmallButton 
+                    <FormButton 
                         label="Sign Up" 
                         func= {signUpConfirmed}
                         icon={confirmIcon}
                         style={buttonStyle.formButton}
-                    ></SmallButton>
+                    ></FormButton>
 
                   </View>
 
@@ -367,7 +420,7 @@ const signInConfirmed = async ()=> {
                 </>
               ):(
                 <>
-                  <Text style={userProfileStyle.formTitle}>Sign In</Text>
+                  <Text style={userProfileStyle.formTitle}>Sign In with your Email and Password</Text>
 
                   <Text style={userProfileStyle.inputLabel}>Email</Text>
 
@@ -389,20 +442,20 @@ const signInConfirmed = async ()=> {
                     secureTextEntry
                   />
 
-                  <View style={userProfileStyle.buttonRow}>
-                    <SmallButton 
+                  <View style={userProfileStyle.formButtonRow}>
+                    <FormButton 
                       label="Clear" 
                       func= {clearSignIn}
                       icon={clearIcon}
                       style={buttonStyle.formButton}
-                    ></SmallButton>
+                    ></FormButton>
 
-                    <SmallButton 
+                    <FormButton 
                         label="Sign In" 
                         func= {signInConfirmed}
                         icon={confirmIcon}
                         style={buttonStyle.formButton}
-                    ></SmallButton>
+                    ></FormButton>
 
                   </View>
 
@@ -416,39 +469,33 @@ const signInConfirmed = async ()=> {
           )}
 {/* present content temporarily without navigating away from the screen. */}
           <Modal
-            animationType='slide'
+            animationType='fade'
             transparent={true}
             visible={updateMode}
             onRequestClose={clearUpdate}
           >
             <View style={userProfileStyle.updateContainer}>
-              <View style={userProfileStyle.updateView}>
+              <View style={userProfileStyle.updateContainerView}>
 
-                <View style={userProfileStyle.titleContainer}>
-                  <Text style={userProfileStyle.titleText}>User Profile</Text>
-                </View>
-
-                <View style={userProfileStyle.updateFormContainer}>
-                  <Text style={userProfileStyle.updateInputLabel}>New User Name</Text>
-                  <TextInput 
-                      style={userProfileStyle.updateInput}
-                      placeholder='Enter new user name'
-                      value={updateName}
-                      onChangeText={setUpdateName}
+                <Text style={userProfileStyle.updateInputLabel}>New User Name</Text>
+                <TextInput 
+                    style={userProfileStyle.updateInput}
+                    placeholder='Enter new user name'
+                    value={updateName}
+                    onChangeText={setUpdateName}
 // capitalise first letter of each word
-                      autoCapitalize='words'
-                  />
+                    autoCapitalize='words'
+                />
 
-                  <Text style={userProfileStyle.updateInputLabel}>New Password</Text>
-                  <TextInput 
-                      style={userProfileStyle.updateInput}
-                      placeholder='Enter new password'
-                      value={updatePassword}
-                      onChangeText={setUpdatePassword}
+                <Text style={userProfileStyle.updateInputLabel}>New Password</Text>
+                <TextInput 
+                    style={userProfileStyle.updateInput}
+                    placeholder='Enter new password'
+                    value={updatePassword}
+                    onChangeText={setUpdatePassword}
 // it will show the password in special characters to increase security
-                      secureTextEntry
-                  />
-                </View>
+                    secureTextEntry
+                />
 {/* if loading is true, show loading screen and deactivates all buttons*/}
                 {loading && (
                   <View style={loadingMessage.body}>
@@ -457,22 +504,22 @@ const signInConfirmed = async ()=> {
                   </View>
                 )}
                 <View style={userProfileStyle.updateButtonRow}>
-                    <SmallButton 
+                    <FormButton 
                         label="Confirm" 
                         func= {updateConfirmed}
                         icon={confirmIcon}
                         style={buttonStyle.formButton}
   // when loading, buttons cannot be pressed.
                         disabled={loading}
-                    ></SmallButton>
+                    ></FormButton>
 
-                    <SmallButton 
+                    <FormButton 
                         label="Cancel" 
                         func= {clearUpdate}
                         icon={cancelIcon}
                         style={buttonStyle.formButton}
                         disabled={loading}
-                    ></SmallButton>
+                    ></FormButton>
                 </View>
               </View>
             </View>

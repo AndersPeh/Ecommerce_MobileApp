@@ -37,6 +37,7 @@ export default function TabNav() {
 
   return (
     <Tab.Navigator
+        initialRouteName="User Profile"
         screenOptions={({ route, navigation }) => ({
             tabBarIcon: ({ focused, color, size }) => {
             let iconName;
@@ -62,10 +63,11 @@ export default function TabNav() {
             tabBarInactiveTintColor: "white", 
         })}
     >
+
       <Tab.Screen
         name="Products"
 // The initial route of ProductStackNav is Category screen, which means user will see Categories
-// when the app is first opened.
+// when select Products.
         component={ProductStackNav}
         options={{ headerShown: false }}
 // destructures navigation to use it in tabProtection.
@@ -78,6 +80,7 @@ export default function TabNav() {
         })}
       />
       
+
       <Tab.Screen name="My Cart" 
         component={MyCart} 
         options={{
@@ -91,6 +94,7 @@ export default function TabNav() {
         })}
       />
 
+
       <Tab.Screen name="My Orders" 
         component={MyOrders} 
         options={{ headerShown: false }}
@@ -99,6 +103,7 @@ export default function TabNav() {
         })}
       />
 
+{/* default screen is UserProfile screen */}
       <Tab.Screen name="User Profile" 
         component={UserProfile} 
         options={{ headerShown: false }}
