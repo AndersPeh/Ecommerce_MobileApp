@@ -4,6 +4,8 @@ import cartReducer from './cartSlice';
 // originally authSlice.reducer
 import authReducer from './authSlice';
 
+import orderReducer from './orderSlice';
+
 // the reducer here is how Redux will handle actions and update the app's state.
 export const store = configureStore({
     reducer: {
@@ -13,5 +15,8 @@ export const store = configureStore({
 // tell configureStote to create a redux store where the state object contains
 // a property named auth and manage the data within state.auth using authReducer.
         auth: authReducer,
+
+        order: orderReducer,
+
     },
 });

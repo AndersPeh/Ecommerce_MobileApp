@@ -11,6 +11,7 @@ import loadingMessage from '../constants/loadingMessage';
 import { clearCart } from '../redux/cartSlice';
 import { fetchCart } from '../redux/cartThunks';
 import { CommonActions } from '@react-navigation/native';
+import { clearOrders } from '../redux/orderSlice';
 
 export default function UserProfile({navigation, route}) {
 // URL to run on local machine
@@ -121,6 +122,9 @@ export default function UserProfile({navigation, route}) {
 
 // clearCart for the next user.
     dispatch(clearCart());
+
+// clear Orders for the next user.
+    dispatch(clearOrders());
 
 // // route back to User Profile screen for the next user to login.
 //     navigation.navigate('User Profile');

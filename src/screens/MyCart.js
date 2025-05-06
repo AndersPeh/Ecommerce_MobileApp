@@ -1,6 +1,6 @@
 import { StatusBar, Text, View, FlatList, Image, Pressable, Alert } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
-import { increaseQuantity, decreaseQuantity, removeProduct } from '../redux/cartSlice';
+import { increaseQuantity, decreaseQuantity, removeProduct, clearCart } from '../redux/cartSlice';
 import Ionicons from "react-native-vector-icons/Ionicons";
 import SmallButton from '../components/SmallButton';
 import buttonStyle from '../constants/buttonStyle';
@@ -8,6 +8,7 @@ import cartStyle from '../constants/cartStyle';
 import pageBackground from '../constants/pageBackground';
 import { saveCart, fetchCart } from '../redux/cartThunks';
 import { useEffect, useRef } from 'react';
+import { createOrder } from '../redux/orderThunks';
 
 export default function MyCart({navigation}) {
 // exactly how it was define in store.js and cartSlice. cart is an object with items array
@@ -40,7 +41,9 @@ export default function MyCart({navigation}) {
     }
 
     dispatch(fetchCart(token))
+// unwrap allows the use of .catch
       .unwrap()
+
       .catch(e=>{
         console.error("MyCart: Failed to fetch cart:", e);
       });
@@ -48,13 +51,16 @@ export default function MyCart({navigation}) {
 // useEffect is triggered when there is changes in token.
 // token and dispatch are included in the dependency to use it inside useEffect.
 // When user logs in, the token changes from null to a valid string,
-// get latest cartProducts from stores.js, save them to the server.
+// get latest cartProducts from the server, save them to the store.js.
   }, [token, dispatch]);
 
+// when a new product is added, any product is removed, the quantity of any
+// product is increased/ decreased, save it to the server.
   useEffect(()=>{
-// token has changed when current token !== previous token
+// find out if token has changed.
     const tokenChanged = previousToken.current !== token;
-// previousToken is assigned to current token. Because this useEffect
+    
+// previousToken is assigned to current token as this useEffect
 // is triggered when token changes.
     previousToken.current=token;
 
@@ -65,14 +71,14 @@ export default function MyCart({navigation}) {
 
 // dont dispatch saveCart when token changes to prevent potential overwriting issue.
 // because when token changes, fetchCart has to run first to fetch data from the server,
-// then setCart, for products in store.js to have to latest products from the server,
+// then setCart, for products in store.js to have to latest products from the server.
 // then cartProducts will correctly reflect data in the server. 
     } else if(tokenChanged){
       console.log("MyCart: Token changes are ignored.");
       return;
     };
 
-// whenever user modifies cartProducts, dispatch saveCart 
+// whenever there is any changes cartProducts, dispatch saveCart 
 // to save cartProducts to the server.
     dispatch(saveCart({products: cartProducts, token}))
       .unwrap()
@@ -119,6 +125,28 @@ export default function MyCart({navigation}) {
   ,0);
 
 
+  const checkoutNewOrder = () => {
+    if(cartProducts){
+
+// dispatch the addNewOrder action with order details which will be inside action.payload
+// to store.js then to orderSlice.
+      dispatch(createOrder({
+      
+        item_number: totalProducts,
+        total_price: totalPrice,
+        order_items: cartProducts,
+
+      }));
+
+// clear cart after checkout.
+      dispatch(clearCart());
+// show success message after checkout.
+      Alert.alert(`One step closer!`, `You have successfully checkout your shopping cart.`);
+
+    }else{
+      Alert.alert('Create New Order failed', data.message?data.message:'');
+    }
+  };
 
 
 // render each product in the cart
@@ -196,7 +224,7 @@ Only need item.id for increase quantity, decrease quantity and remove product*/}
 {/* checkout button */}
       <SmallButton
         label="Check Out"
-        func={()=> Alert.alert("Checkout feature coming soon!")}
+        func={()=> checkoutNewOrder}
         icon={checkoutIcon}
         style={buttonStyle.checkoutButton}
       ></SmallButton>
