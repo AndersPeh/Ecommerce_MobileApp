@@ -63,6 +63,7 @@ export const saveCart = createAsyncThunk(
 
 // must put products and token to dispatch saveCart
 // For example, dispatch(saveCart({products:currentCartProducts, token:token}))
+// saveCart desturctures using {}  products and token from MyCart dispatch.
 // not dispatching action this time, directly talk to server, only need rejectWithValue
     async({products, token}, {rejectWithValue}) => {
         if(!token){

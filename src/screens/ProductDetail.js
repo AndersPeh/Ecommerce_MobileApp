@@ -6,7 +6,7 @@ import SmallButton from '../components/SmallButton';
 import Ionicons from "react-native-vector-icons/Ionicons";
 import buttonStyle from '../constants/buttonStyle';
 import detailsStyle from '../constants/detailsStyle';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import {addProduct} from '../redux/cartSlice';
 
 export default function ProductDetail({navigation, route}) {
@@ -19,11 +19,6 @@ export default function ProductDetail({navigation, route}) {
   const productSelected = route.params?.product;
 // simplify useDispatch for later use to control state.
   const dispatch = useDispatch();
-
-  const { token} = useSelector((state)=>state.auth);
-
-  const {products} = useSelector((state)=>state.cart);
-
 
   // Make a back icon.
   const backIcon = <Ionicons name="backspace"

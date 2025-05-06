@@ -74,7 +74,7 @@ export const cartSlice = createSlice({
             state.products = state.products.filter(product => product.id !== id);
         },
 
-// when user logs in, restore user's cart if any. If no product, leave it empty.
+// when user logs in, restore user's cart if any in the server. If no product, leave it empty.
         setCart: (state, action) => {
 // action.payload returns array of product details object from backend.
             state.products = action.payload || [];

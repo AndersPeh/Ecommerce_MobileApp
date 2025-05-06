@@ -6,8 +6,8 @@ import SmallButton from '../components/SmallButton';
 import buttonStyle from '../constants/buttonStyle';
 import cartStyle from '../constants/cartStyle';
 import pageBackground from '../constants/pageBackground';
-import { saveCart } from '../redux/cartThunks';
-import { useEffect } from 'react';
+import { saveCart, fetchCart } from '../redux/cartThunks';
+import { useEffect, useRef } from 'react';
 
 export default function MyCart({navigation}) {
 // exactly how it was define in store.js and cartSlice. cart is an object with items array
@@ -19,22 +19,69 @@ export default function MyCart({navigation}) {
 // to simplify useDispatch for later use.
   const dispatch = useDispatch();
 
+// keep track of previous token value. useRef ensures token value persists
+// across component re-renders.
+// intialise previousToken.current to token when the screen first loaded.
+// For example, when token changes later, previousToken.current will stay the same
+// unless it is updated manually.
+  const previousToken = useRef(token);
+
+// when user logs in, retrieve cart products from the server, pass it to setCart
+// setCart will then provide cart products of the user
   useEffect(()=>{
-// cant save without token or cartProducts
+// when the user has signed out, dont save
+    if(!token){
+      console.log("MyCart: Token is required for fetching Cart.");
+
+// set previous token to null because there is no token. as such, the next
+// useEffect will not be triggered due to token changes upon signing out.
+      previousToken.current = null;
+      return;
+    }
+
+    dispatch(fetchCart(token))
+      .unwrap()
+      .catch(e=>{
+        console.error("MyCart: Failed to fetch cart:", e);
+      });
+    
+// useEffect is triggered when there is changes in token.
+// token and dispatch are included in the dependency to use it inside useEffect.
+// When user logs in, the token changes from null to a valid string,
+// get latest cartProducts from stores.js, save them to the server.
+  }, [token, dispatch]);
+
+  useEffect(()=>{
+// token has changed when current token !== previous token
+    const tokenChanged = previousToken.current !== token;
+// previousToken is assigned to current token. Because this useEffect
+// is triggered when token changes.
+    previousToken.current=token;
+
+// when the user has signed out or there is no product, dont save
     if(!token || !cartProducts){
       console.log("MyCart: Both Token and cartProducts are required.");
       return;
-    }
-// whenever cartProducts or token change, dispatch saveCart with 
-// latest cartProducts and token from store.js
+
+// dont dispatch saveCart when token changes to prevent potential overwriting issue.
+// because when token changes, fetchCart has to run first to fetch data from the server,
+// then setCart, for products in store.js to have to latest products from the server,
+// then cartProducts will correctly reflect data in the server. 
+    } else if(tokenChanged){
+      console.log("MyCart: Token changes are ignored.");
+      return;
+    };
+
+// whenever user modifies cartProducts, dispatch saveCart 
+// to save cartProducts to the server.
     dispatch(saveCart({products: cartProducts, token}))
       .unwrap()
       .catch(e=>{
         console.error("MyCart: Failed to save cart:", e);
       });
 
-// useEffect is triggered when there is changes in cartProducts or token.
-// dispatch is included in the dependency to use it inside useEffect.
+// useEffect is triggered when there is changes in cartProducts.
+// token and dispatch are included in the dependency to use it inside useEffect.
   }, [cartProducts, token, dispatch]);
 
   // Make Increase icon.

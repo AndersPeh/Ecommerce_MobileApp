@@ -10,6 +10,7 @@ import userProfileStyle from '../constants/userProfileStyle';
 import loadingMessage from '../constants/loadingMessage';
 import { clearCart } from '../redux/cartSlice';
 import { fetchCart } from '../redux/cartThunks';
+import { CommonActions } from '@react-navigation/native';
 
 export default function UserProfile({navigation, route}) {
 // URL to run on local machine
@@ -72,6 +73,13 @@ export default function UserProfile({navigation, route}) {
     style={buttonStyle.iconStyle}
   />;
 
+    // Make an update icon.
+  const updateIcon = <Ionicons name="push"
+    size={25}
+    color="#004D66"
+    style={buttonStyle.iconStyle}
+  />;
+
 // clear sign in fields after signing in
   const clearSignIn = () =>{
     setSignInEmail('');
@@ -96,11 +104,49 @@ export default function UserProfile({navigation, route}) {
 
   // clear everything to sign out
   const signOutConfirmed =()=>{
+
+// // when user presses sign out button, begins loading screen.
+//     setLoading(true);
+
+// // route back to Categories screen for the next user.
+//     navigation.navigate('Products', {
+//       screen:'Categories',
+
+// // initial true will reset the ProductStackNav to this specified screen.
+//       initial: true,
+//     });
+
 // set user and token to null. isAuthenticated to false.
     dispatch(signOut());
 
-  // clearCart for the next user.
+// clearCart for the next user.
     dispatch(clearCart());
+
+// // route back to User Profile screen for the next user to login.
+//     navigation.navigate('User Profile');
+
+// // stop loading screen after everything is done.
+//     setLoading(false);
+
+// reset the TabNavigator state after sign out so next user won't see 
+// screen selected by previous user.
+    navigation.dispatch(
+
+// after reset, the app will go to index 3 screen which is User Profile screen.
+      CommonActions.reset({
+        index:3,
+        
+// reset these routes.
+        routes:[
+          {name:'Products'},
+          {name:'My Cart'},
+          {name:'My Orders'},
+          {name:'User Profile'}
+
+        ]
+      })
+    );
+
   }
 
   // prefill user name and open update form by activating update mode.
@@ -346,7 +392,7 @@ const signInConfirmed = async ()=> {
                 <FormButton 
                   label="Update" 
                   func= {openUpdateForm}
-                  icon={confirmIcon}
+                  icon={updateIcon}
                   style={buttonStyle.formButton}
                 ></FormButton>
 

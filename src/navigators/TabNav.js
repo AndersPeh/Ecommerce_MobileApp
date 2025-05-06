@@ -12,11 +12,18 @@ const Tab = createBottomTabNavigator();
 // To display bottom tab navigator in following screens.
 export default function TabNav() {
 
-// get cart items to calculate total quantity for the badge
+// get cart products to calculate total quantity for the badge
   const cartProducts = useSelector((state)=> state.cart.products);
   const totalQuantity = cartProducts.reduce((sum, eachProduct)=>
     sum+=eachProduct.quantity
   ,0);
+
+// get order products to calculate total quantity for the badge
+  const newOrderProducts = useSelector((state)=> state.order.newOrders);
+  const totalNewOrders = newOrderProducts.reduce((sum, eachOrder)=>
+    sum+=eachOrder.quantity
+  ,0);
+
 
 // get authentication status
   const isAuthenticated = useSelector((state)=>state.auth.isAuthenticated);
@@ -65,11 +72,16 @@ export default function TabNav() {
     >
 
       <Tab.Screen
+// name of the route
         name="Products"
+
 // The initial route of ProductStackNav is Category screen, which means user will see Categories
 // when select Products.
         component={ProductStackNav}
+
+// dont use react native tab nav header.
         options={{ headerShown: false }}
+
 // destructures navigation to use it in tabProtection.
 // pass navigation to tabProtection to navigate user to User Profile screen later.
 // tabPress is the event that runs when the user pressed the bottom tab of this screen.
@@ -78,8 +90,8 @@ export default function TabNav() {
         listeners={({navigation})=>({
           tabPress: pressTab => tabProtection(pressTab, navigation),
         })}
-      />
-      
+
+      />       
 
       <Tab.Screen name="My Cart" 
         component={MyCart} 
@@ -97,7 +109,12 @@ export default function TabNav() {
 
       <Tab.Screen name="My Orders" 
         component={MyOrders} 
-        options={{ headerShown: false }}
+        options={{ 
+// only show badge when there is quantity
+          tabBarBadge: isAuthenticated&&totalNewOrders > 0? totalNewOrders:null,
+          tabBarBadgeStyle:{backgroundColor:"red", colour:"white"},
+          headerShown: false 
+        }}
         listeners={({navigation})=>({
           tabPress: pressTab => tabProtection(pressTab, navigation),
         })}
