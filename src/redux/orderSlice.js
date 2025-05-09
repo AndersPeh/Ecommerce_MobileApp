@@ -8,6 +8,7 @@ export const orderSlice = createSlice({
     initialState: {
 
         orders: [],
+        newOrderQuantity: 0,
     },
     
 // Each function in reducers of createSlice have state and action.
@@ -19,27 +20,38 @@ export const orderSlice = createSlice({
 // reducer for user to add a new order.
         addNewOrder: (state, action) =>{
 
-// get products from MyCart checkout
-            const productsNewOrder = action.payload;
+// store products from MyCart checkout to the beginning of the orders array.
+// used unshift so new orders will appear first.
+            state.orders.unshift(action.payload);
 
-// store products from MyCart checkout to orders array.
-            state.orders.push({...productsNewOrder});
+// count new orders in every action to ensure accuracy.
+            state.newOrderQuantity = state.orders.filter(eachOrder=>{
+                eachOrder.is_paid===0 && eachOrder.is_delivered===0
+            }).length;
+
         },
 
 // reducer for user to update payment status an order.
         updatePaid: (state, action) =>{
 
 // only need the order id to update it.
-            const {orderID} = action.payload;
+            const id = action.payload;
             
 // find that order with that id and update it.
-            const findOrder = state.orders.find(each => {
-                each.orderID === orderID
-            });
+            const findOrder = state.orders.find(each => 
+                each.id === id
+            );
 
             if (findOrder){
-                findOrder.isPaid = 1;
+                findOrder.is_paid = 1;
+                findOrder.is_delivered = 0;
+
             };
+
+            // count new orders in every action to ensure accuracy.
+            state.newOrderQuantity = state.orders.filter(eachOrder=>{
+                eachOrder.is_paid===0 && eachOrder.is_delivered===0
+            }).length;
 
         },
 
@@ -47,17 +59,23 @@ export const orderSlice = createSlice({
         updateDelivered: (state, action) =>{
 
 // only need the order id to update it.
-            const {orderID} = action.payload;
+            const id = action.payload;
             
 // find that order with that id and update it.
-            const findOrder = state.orders.find(each => {
-                each.orderID === orderID
-            });
+            const findOrder = state.orders.find(each => 
+                each.id === id
+            );
 
             if (findOrder){
-                findOrder.isDelivered = 1;
+                findOrder.is_paid = 1;
+                findOrder.is_delivered = 1;
             };
-    
+
+            // count new orders in every action to ensure accuracy.
+            state.newOrderQuantity = state.orders.filter(eachOrder=>{
+                eachOrder.is_paid===0 && eachOrder.is_delivered===0
+            }).length;
+
         },
 
 // when user logs in, restore user's orders if any in the server. If no order, leave it empty.
@@ -65,11 +83,19 @@ export const orderSlice = createSlice({
 
 // action.payload returns orders from backend.
             state.orders = action.payload || [];
+
+            // count new orders in every action to ensure accuracy.
+            state.newOrderQuantity = state.orders.filter(eachOrder=>{
+                eachOrder.is_paid===0 && eachOrder.is_delivered===0
+            }).length;
         },
 
 // when user signs out, clear orders for the next user.
         clearOrders:(state, action) => {
+
             state.orders=[];
+
+            state.newOrderQuantity = 0 ;
 
         },
     },

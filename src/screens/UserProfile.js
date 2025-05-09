@@ -106,17 +106,6 @@ export default function UserProfile({navigation, route}) {
   // clear everything to sign out
   const signOutConfirmed =()=>{
 
-// // when user presses sign out button, begins loading screen.
-//     setLoading(true);
-
-// // route back to Categories screen for the next user.
-//     navigation.navigate('Products', {
-//       screen:'Categories',
-
-// // initial true will reset the ProductStackNav to this specified screen.
-//       initial: true,
-//     });
-
 // set user and token to null. isAuthenticated to false.
     dispatch(signOut());
 
@@ -125,12 +114,6 @@ export default function UserProfile({navigation, route}) {
 
 // clear Orders for the next user.
     dispatch(clearOrders());
-
-// // route back to User Profile screen for the next user to login.
-//     navigation.navigate('User Profile');
-
-// // stop loading screen after everything is done.
-//     setLoading(false);
 
 // reset the TabNavigator state after sign out so next user won't see 
 // screen selected by previous user.
@@ -212,6 +195,8 @@ const signInConfirmed = async ()=> {
               .unwrap()
 // in case there is any dispatch rejection.
               .catch(e=>console.error("Failed to fetch cart after Sign In:", e));
+
+            
           }
 
 // clear input fields after successfully sign in.

@@ -18,17 +18,9 @@ export default function TabNav() {
     sum+=eachProduct.quantity
   ,0);
 
-// get order products to calculate total quantity for the badge
-  const ordersInfo = useSelector((state) => state.order.orders);
 
 // total new orders.
-  const totalNewOrders = ordersInfo.reduce((sum, eachOrder)=>
-    {
-      if(eachOrder.isPaid==0 &&eachOrder.isDelivered==0){
-      sum+=1
-      }
-    }
-  ,0);
+  const totalNewOrders = useSelector((state)=> state.order.newOrderQuantity);
   
 // get authentication status
   const isAuthenticated = useSelector((state)=>state.auth.isAuthenticated);

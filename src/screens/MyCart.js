@@ -1,6 +1,6 @@
 import { StatusBar, Text, View, FlatList, Image, Pressable, Alert } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
-import { increaseQuantity, decreaseQuantity, removeProduct, clearCart } from '../redux/cartSlice';
+import { increaseQuantity, decreaseQuantity, removeProduct } from '../redux/cartSlice';
 import Ionicons from "react-native-vector-icons/Ionicons";
 import SmallButton from '../components/SmallButton';
 import buttonStyle from '../constants/buttonStyle';
@@ -119,6 +119,7 @@ export default function MyCart({navigation}) {
   const totalProducts = cartProducts.reduce((sum, eachProduct)=>
     sum+eachProduct.quantity
   ,0);
+  
 // total price to be paid.
   const totalPrice = cartProducts.reduce((sum, eachProduct)=>
     sum+eachProduct.price*eachProduct.quantity
@@ -126,27 +127,44 @@ export default function MyCart({navigation}) {
 
 
   const checkoutNewOrder = () => {
-    if(cartProducts){
 
-// dispatch the addNewOrder action with order details which will be inside action.payload
-// to store.js then to orderSlice.
-      dispatch(createOrder({
-      
-        item_number: totalProducts,
-        total_price: totalPrice,
-        order_items: cartProducts,
-
-      }));
-
-// clear cart after checkout.
-      dispatch(clearCart());
-// show success message after checkout.
-      Alert.alert(`One step closer!`, `You have successfully checkout your shopping cart.`);
-
-    }else{
-      Alert.alert('Create New Order failed', data.message?data.message:'');
+    if(!cartProducts || cartProducts.length===0){
+      Alert.alert('Empty Cart', 'Please add some products to checkout.');
+      return;
     }
+
+    if(!token){
+      Alert.alert('Please sign in');
+      return;
+    }
+
+// dispatch the createOrder action with order details which will be inside action.payload then it will
+// trigger addProduct to update state in store.js then clearCart.
+    dispatch(createOrder({
+
+      order_items: cartProducts,
+
+      token
+
+    }))
+
+// use unwrap to handle promise result and erros.
+      .unwrap()
+
+// createOrder from orderThunks returns fullOrderFrontend which consists of order ID. User will see
+// empty cart.
+      .then((createdOrder) => {
+
+        Alert.alert('Successful Checkout!', `Your Order Number is ${createdOrder.id}.`);
+
+      })
+
+      .catch((e) => {
+        Alert.alert('Checkout Failed', e || 'Checkout Failed', 'Please try again.');
+        console.error('Checkout error:', e);
+      });
   };
+
 
 
 // render each product in the cart
@@ -224,7 +242,7 @@ Only need item.id for increase quantity, decrease quantity and remove product*/}
 {/* checkout button */}
       <SmallButton
         label="Check Out"
-        func={()=> checkoutNewOrder}
+        func={checkoutNewOrder}
         icon={checkoutIcon}
         style={buttonStyle.checkoutButton}
       ></SmallButton>
