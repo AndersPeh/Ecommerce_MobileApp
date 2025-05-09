@@ -51,7 +51,7 @@ export default function TabNav() {
             } else if (route.name === "My Cart") {
                 iconName = focused ? "cart" : "cart-outline";
             } else if (route.name === "My Orders") {
-                iconName = focused ? "gift" : "gift-outline";
+                iconName = focused ? "basket" : "basket-outline";
             } else if (route.name === "User Profile") {
                 iconName = focused ? "person-circle" : "person-circle-outline";
             }
@@ -91,29 +91,44 @@ export default function TabNav() {
       />       
 
       <Tab.Screen name="My Cart" 
+
         component={MyCart} 
+
         options={{
 // only show badge when there is quantity
           tabBarBadge: isAuthenticated&&totalQuantity > 0? totalQuantity:null,
+
           tabBarBadgeStyle:{backgroundColor:"red", colour:"white"},
+
           headerShown: false
         }}
+
         listeners={({navigation})=>({
+
           tabPress: pressTab => tabProtection(pressTab, navigation),
         })}
+
       />
 
 
       <Tab.Screen name="My Orders" 
+
         component={MyOrders} 
+
         options={{ 
 // only show badge when there is quantity
           tabBarBadge: isAuthenticated&&totalNewOrders > 0? totalNewOrders:null,
+
           tabBarBadgeStyle:{backgroundColor:"red", colour:"white"},
+
           headerShown: false 
+
         }}
+
         listeners={({navigation})=>({
+
           tabPress: pressTab => tabProtection(pressTab, navigation),
+
         })}
       />
 

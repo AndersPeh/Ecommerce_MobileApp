@@ -4,8 +4,8 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import SmallButton from '../components/SmallButton';
 import buttonStyle from '../constants/buttonStyle';
 import pageBackground from '../constants/pageBackground';
-import { useEffect, useMemo, useState } from 'react';
-import { fetchOrders, updateOrder} from '../redux/orderThunks';
+import { useMemo, useState } from 'react';
+import { updateOrder} from '../redux/orderThunks';
 import ordersStyle from '../constants/ordersStyle';
 
 export default function MyOrders({navigation}) {
@@ -19,8 +19,6 @@ export default function MyOrders({navigation}) {
 // to simplify useDispatch for later use.
   const dispatch = useDispatch();
 
-  const isAuthenticated = useSelector((state)=>state.auth.isAuthenticated);
-
 // by default, shows every type of orders.
   const [showNew, setShowNew] = useState(true);
   const [showPaid, setShowPaid] = useState(true);
@@ -29,53 +27,17 @@ export default function MyOrders({navigation}) {
 // loading for fetch
   const [isLoading, setIsLoading] = useState(false);
 
-
-// when user logs in, retrieve orders from the server, pass it to setOrders
-// setOrders will then provide cart products of the user
-  useEffect(()=>{
-
-// when the user has signed out, dont save
-    if(!token){
-      console.log("MyOrders: Token is required for fetching Orders.");
-
-      return;
-    }
-
-    if(isAuthenticated && token){
-// isLoading starts when user signs in to restore orders.
-      setIsLoading(true);
-
-      dispatch(fetchOrders(token))
-
-        .unwrap()
-
-        .catch(e=>{
-          console.error("MyOrders: Failed to fetch orders:", e);
-        })
-
-// stop running after operation regardless of the result.
-        .finally(()=>setIsLoading(false));
-    
-    }
-// useEffect is triggered when there is changes in token.
-// token and dispatch are included in the dependency to use it inside useEffect.
-// When user logs in, the token changes from null to a valid string,
-// get latest orders from the server, save them to the store.js.
-  }, [token, isAuthenticated, dispatch]);
-
-
-// total new orders.
-  const totalNewOrders = useSelector((state)=> state.order.newOrderQuantity);
-
-
 // useMemo elements wont be changed when the screen re-renders. it will only be updated when there is changes in ordersInfo.
 // if ordersInfo remains the same after re-render, useMemo will return the 
 // previously calculated categorisedOrders object.
 // useMemo can cache the result to improve performance. 
   const categorisedOrders = useMemo(()=>{
 
+// use filter to return orders of different categories.
     const newOrdersList = ordersInfo.filter(eachOrder => eachOrder.is_paid===0 && eachOrder.is_delivered===0);
+
     const paidOrdersList = ordersInfo.filter(eachOrder => eachOrder.is_paid===1 && eachOrder.is_delivered===0);
+    
     const deliveredOrdersList = ordersInfo.filter(eachOrder => eachOrder.is_paid===1 && eachOrder.is_delivered===1);
 
     return {newOrdersList, paidOrdersList, deliveredOrdersList};
@@ -92,16 +54,16 @@ export default function MyOrders({navigation}) {
   
         title: 'New Orders',
   
-  // data contains the orders to render if section is shown.
+  // display new orders if it is pressed.
         data: showNew ? categorisedOrders.newOrdersList : [],
   
-  // used by renderSectionHeader to toggle visibility and show correct icon.
+  // showNew decides if new orders and and different caret icons will be displayed.
         showContentAndIcon: showNew,
   
-  // function to toggle visibility.
+  // will be used in button to enable/ disable setShowNew
         setShowContentAndIcon: setShowNew,
   
-  // for display in header
+  // display number of products in each order.
         eachOrderNumberOfProducts: categorisedOrders.newOrdersList.length,
   
   // for no orders message
@@ -113,19 +75,14 @@ export default function MyOrders({navigation}) {
   
         title: 'Paid Orders',
   
-  // data contains the orders to render if section is shown.
         data: showPaid ? categorisedOrders.paidOrdersList : [],
   
-  // used by renderSectionHeader to toggle visibility and show correct icon.
         showContentAndIcon: showPaid,
   
-  // function to toggle visibility.
         setShowContentAndIcon: setShowPaid,
   
-  // for display in header
         eachOrderNumberOfProducts: categorisedOrders.paidOrdersList.length,
   
-  // for no orders message
         noOrders: showPaid && categorisedOrders.paidOrdersList.length === 0,
       });
   
@@ -133,19 +90,14 @@ export default function MyOrders({navigation}) {
   
         title: 'Delivered Orders',
   
-  // data contains the orders to render if section is shown.
         data: showDelivered ? categorisedOrders.deliveredOrdersList : [],
   
-  // used by renderSectionHeader to toggle visibility and show correct icon.
         showContentAndIcon: showDelivered,
   
-  // function to toggle visibility.
         setShowContentAndIcon: setShowDelivered,
   
-  // for display in header
         eachOrderNumberOfProducts: categorisedOrders.deliveredOrdersList.length,
   
-  // for no orders message
         noOrders: showDelivered && categorisedOrders.deliveredOrdersList.length === 0,
       });
   
@@ -154,7 +106,7 @@ export default function MyOrders({navigation}) {
   
   // when there is any changes in categorisedOrders, it should update ordersSection to reflect correct orders.
   // when there is any changes in showNew, showPaid, showDelivered, it should update ordersSection to
-  // reflect the correct status.
+  // show or hide orders..
   }, [categorisedOrders, showNew, showPaid, showDelivered]);
   
 
@@ -292,11 +244,11 @@ export default function MyOrders({navigation}) {
     }
 
     return (
-      <View style={ordersStyle.orderItemContainer}>
+      <View style={ordersStyle.orderItemContainer} >
 
   {/* default is collapsed, expand on first click, collapse on next click. */}
         <Pressable onPress={()=> setIsExpanded(!isExpanded)} style={ordersStyle.orderCompactRowPressable}>
-          <Text style={ordersStyle.orderCompactTextBold}>ID: {order.id}</Text>
+          <Text style={ordersStyle.orderCompactText}>ID: {order.id}</Text>
           <Text style={ordersStyle.orderCompactText}>Products: {order.item_numbers}</Text>
           <Text style={ordersStyle.orderCompactText}>Total: ${(order.total_price/ 100).toFixed(2)}</Text>
 
@@ -384,47 +336,66 @@ export default function MyOrders({navigation}) {
   return (
     <View style={pageBackground}>
 
+      <View style={ordersStyle.titleContainer}>
+        <Text style={ordersStyle.titleText}>My Orders</Text>
+      </View>
 
       <SectionList
       
+// everything different sections (new, paid, delivered) need is inside sections.
         sections={sections}
-        keyExtractor={(item, index) => item.id.toString() +index}
-        renderItem={({item}) => <OrderRow order={item}/>}
-        renderSectionHeader={({section}) => (
-          <Pressable
-            onPress={()=> section.setShowContentAndIcon(!section.showContentAndIcon)}
 
-            style={ordersStyle.categoryHeaderPressable}
+// item refers to each order of every section (new, paid, delivered).
+// index is the position of that order object in that category array.
+// combination of order id and index ensures uniqueness of the key.
+
+// keyExtractor is designed to take item directly, no need to destructure.
+        keyExtractor={(item, index) => item.id.toString() +index}
+
+// when SectionList renders every order in new, paid and delivered sections,
+// it will put order being rendered in OrderRow to display it.
+// For example,
+// sections = 
+// [{ title : 'New Orders', data : [ {newOrder1} , {newOrder2} ]  },          <<< newOrders object
+// {},            <<< paidOrders object
+// {}]            <<< deliveredOrders object
+// item refers to {newOrder1}, {newOrder2} for newOrders categories.
+
+// renderItem actually receives an object named info containing item, index, section and separators.
+// destructures item to use every order of all categories directly in OrderRow because only
+// order object is needed.
+        renderItem={({item}) => <OrderRow order={item}/>}
+
+// for every section, the header is pressable which will show/ hide content of orders.
+        renderSectionHeader={({section}) => (
+
           
-          >
-          
-            <Text style={ordersStyle.categoryHeaderText}>
-              {section.title}: {section.eachOrderNumberOfProducts}</Text>
-            {section.showContentAndIcon? caretUpIcon: caretDownIcon}
-          </Pressable>
+            <Pressable
+  // when pressed, it will show/ hide the orders of that specific category.
+              onPress={()=> section.setShowContentAndIcon(!section.showContentAndIcon)}
+
+              style={ordersStyle.categoryHeaderPressable}
+
+              disabled={section.eachOrderNumberOfProducts===0}
+            
+            >
+            
+  {/* For the pressable, display title like New Orders and number of products for that order category. */}
+              <Text style={ordersStyle.categoryHeaderText}>
+
+                {section.title}: {section.eachOrderNumberOfProducts}</Text>
+
+              {section.eachOrderNumberOfProducts===0? ''
+              :(section.showContentAndIcon? caretUpIcon: caretDownIcon)}
+
+            </Pressable>
       )}
 
-// the footer only appears when there is no order. it displays No orders under the header.
-        renderSectionFooter={({section}) => {
-          if(section.noOrders){
-            return(
-              <Text style={ordersStyle.emptyText}>
-                No orders in this order category.
-              </Text>
-
-            );
-          }
-
-// no footer if section is not empty or not shown.
-          return null;
-        }}
 
 // header of the page, before the section list.
         ListHeaderComponent={
           <>
-            <View style={ordersStyle.titleContainer}>
-              <Text style={ordersStyle.titleText}>My Orders</Text>
-            </View>
+
 
             {isLoading && ordersInfo && ordersInfo.length > 0 && <ActivityIndicator
               color='#FFBF00'
@@ -435,13 +406,12 @@ export default function MyOrders({navigation}) {
           </>
         }
 
-        contentContainerStyle={{paddingHorizontal: ordersStyle.categorySection.marginHorizontal}}
+        // contentContainerStyle={{paddingHorizontal: ordersStyle.categorySection.marginHorizontal}}
 
         SectionSeparatorComponent={()=>(
           <View style={{height: ordersStyle.categorySection.marginBottom}}/>
         )}
 
-        stickySectionHeadersEnabled={true}
 
         style={ordersStyle.mainScrollContainer}
       />

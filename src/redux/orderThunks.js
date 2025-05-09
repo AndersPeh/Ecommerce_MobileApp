@@ -208,7 +208,7 @@ export const createOrder = createAsyncThunk(
                         is_paid: newlyCreatedOrder.is_paid,
                         is_delivered: newlyCreatedOrder.is_delivered,
         
-                    };}
+                };}
             } else{
 
                 console.error('Order created, but failed to re-fetch orders list from server.');

@@ -12,6 +12,8 @@ import { clearCart } from '../redux/cartSlice';
 import { fetchCart } from '../redux/cartThunks';
 import { CommonActions } from '@react-navigation/native';
 import { clearOrders } from '../redux/orderSlice';
+import { useEffect } from 'react';
+import { fetchOrders } from '../redux/orderThunks';
 
 export default function UserProfile({navigation, route}) {
 // URL to run on local machine
@@ -80,6 +82,40 @@ export default function UserProfile({navigation, route}) {
     color="#004D66"
     style={buttonStyle.iconStyle}
   />;
+
+// when user logs in, retrieve orders from the server, pass it to setOrders
+// setOrders will then provide cart products of the user
+  useEffect(()=>{
+
+// when the user has signed out, dont save
+    if(!token){
+      console.log("MyOrders: Token is required for fetching Orders.");
+
+      return;
+    }
+
+    if(isAuthenticated && token){
+// isLoading starts when user signs in to restore orders.
+      setLoading(true);
+
+      dispatch(fetchOrders(token))
+
+        .unwrap()
+
+        .catch(e=>{
+          console.error("MyOrders: Failed to fetch orders:", e);
+        })
+
+// stop running after operation regardless of the result.
+        .finally(()=>setLoading(false));
+    
+    }
+// useEffect is triggered when there is changes in token.
+// token and dispatch are included in the dependency to use it inside useEffect.
+// When user logs in, the token changes from null to a valid string,
+// get latest orders from the server, save them to the store.js.
+  }, [token, isAuthenticated, dispatch]);
+
 
 // clear sign in fields after signing in
   const clearSignIn = () =>{

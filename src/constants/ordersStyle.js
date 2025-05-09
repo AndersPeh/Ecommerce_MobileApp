@@ -6,7 +6,6 @@ export default {
         backgroundColor: '#091235', 
         alignItems: 'center',
         justifyContent: 'center',
-        marginBottom: 10,
         elevation: 3,
     },
     titleText: {
@@ -35,19 +34,23 @@ export default {
         backgroundColor: '#1A3D4F',
     },
     loadingText: {
-        marginTop: 10,
+        // marginTop: 10,
         fontSize: 16,
         color: '#F5E8C7',
     },
     mainScrollContainer: { 
-        flex: 1,
+        // flex: 1,
+        width:'100%',
+        height:'100%',
+        // marginBottom:10,
+
     },
     categorySection: {
-        marginHorizontal: 10,
-        marginBottom: 15,
+        // marginHorizontal: 6,
+        marginBottom: 5,
     },
     categoryHeaderPressable: {
-        backgroundColor: '#365486', 
+        backgroundColor: '#FFBF00', 
         paddingVertical: 12,
         paddingHorizontal: 15,
         borderRadius: 8,
@@ -55,46 +58,48 @@ export default {
         justifyContent: 'space-between',
         alignItems: 'center',
         elevation: 2,
-        marginBottom: 5, 
+        marginHorizontal:8,
+        marginTop:20,
     },
     categoryHeaderText: {
         fontSize: 18,
         fontWeight: 'bold',
-        color: '#F5E8C7',
+        color: 'black',
     },
     orderItemContainer: { 
-        backgroundColor: 'white', 
-        marginVertical: 5,
-        borderRadius: 6,
-        elevation: 1,
-        overflow: 'hidden', 
+        // backgroundColor: 'white', 
+        marginTop: 5,
+        // borderRadius: 8,
+        marginHorizontal:16,
+        
+
     },
     orderCompactRowPressable: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
         paddingVertical: 12,
-        paddingHorizontal: 10,
-        backgroundColor: '#7E8A97',
+        paddingHorizontal: 12,
+        backgroundColor: '#D1F6FF',
+        marginTop:15,
+        // borderRadius:8,
     },
     orderCompactText: {
-        fontSize: 14,
-        color: 'white',
-    },
-    orderCompactTextBold: {
-        fontSize: 14,
-        color: 'white',
+        fontSize: 16,
+        color: 'black',
         fontWeight: 'bold',
+
     },
+
     orderExpandedDetailsContainer: {
         padding: 10,
-        backgroundColor: '#F0F0F0', 
+        backgroundColor: 'white', 
     },
     eachProductRow: { 
         flexDirection: 'row',
         alignItems: 'center',
         paddingVertical: 8,
-        borderBottomWidth: 1,
+        borderBottomWidth: 2,
     },
     productImage: { 
         width: 60,
@@ -108,7 +113,7 @@ export default {
         flex: 1,
     },
     eachProductTitle: {
-        fontSize: 14,
+        fontSize: 16,
         fontWeight: '600',
         color: 'black',
         marginBottom: 4,
@@ -118,22 +123,23 @@ export default {
         justifyContent: 'space-between', 
     },
     eachProductPrice: {
-        fontSize: 13,
+        fontSize: 15,
         color: 'black',
     },
     eachProductQuantity: {
-        fontSize: 13,
+        fontSize: 15,
         color: 'black',
     },
     actionButtonContainer: {
         marginTop: 10,
         flexDirection: 'row', 
         alignItems: 'center',
-        justifyContent: 'flex-start',
+        justifyContent: 'center',
     },
     orderActionButton: { 
       marginHorizontal: 5, 
-      height:30,
+      height:40,
+      width:120,
     },
     actionLoadingIndicator: {
         marginLeft: 10,

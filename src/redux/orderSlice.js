@@ -25,9 +25,9 @@ export const orderSlice = createSlice({
             state.orders.unshift(action.payload);
 
 // count new orders in every action to ensure accuracy.
-            state.newOrderQuantity = state.orders.filter(eachOrder=>{
+            state.newOrderQuantity = state.orders.filter(eachOrder=>
                 eachOrder.is_paid===0 && eachOrder.is_delivered===0
-            }).length;
+            ).length;
 
         },
 
@@ -49,9 +49,9 @@ export const orderSlice = createSlice({
             };
 
             // count new orders in every action to ensure accuracy.
-            state.newOrderQuantity = state.orders.filter(eachOrder=>{
+            state.newOrderQuantity = state.orders.filter(eachOrder=>
                 eachOrder.is_paid===0 && eachOrder.is_delivered===0
-            }).length;
+            ).length;
 
         },
 
@@ -72,9 +72,9 @@ export const orderSlice = createSlice({
             };
 
             // count new orders in every action to ensure accuracy.
-            state.newOrderQuantity = state.orders.filter(eachOrder=>{
+            state.newOrderQuantity = state.orders.filter(eachOrder=>
                 eachOrder.is_paid===0 && eachOrder.is_delivered===0
-            }).length;
+            ).length;
 
         },
 
@@ -85,9 +85,9 @@ export const orderSlice = createSlice({
             state.orders = action.payload || [];
 
             // count new orders in every action to ensure accuracy.
-            state.newOrderQuantity = state.orders.filter(eachOrder=>{
+            state.newOrderQuantity = state.orders.filter(eachOrder=>
                 eachOrder.is_paid===0 && eachOrder.is_delivered===0
-            }).length;
+            ).length;
         },
 
 // when user signs out, clear orders for the next user.
