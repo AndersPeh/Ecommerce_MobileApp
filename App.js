@@ -1,10 +1,30 @@
 import TabNav from "./src/navigators/TabNav";
 import { NavigationContainer } from '@react-navigation/native';
-import React from "react";
+import React, {useState, useEffect} from "react";
 import { Provider } from "react-redux";
 import { store } from "./src/redux/store";
+import SplashScreen from './SplashScreenView';
 
 export default function App() {
+
+  const [isLoading, setIsLoading] = useState(true);
+
+// when the app is first loading, show the splash screen for 2 seconds
+// to simulate a loading process.
+  useEffect(()=>{
+
+    setTimeout(()=>{
+
+      setIsLoading(false);
+
+    }, 2000);
+
+  }, []);
+
+  if(isLoading){
+    return <SplashScreen />;
+  }
+
   return (
     <Provider store={store}>
       <NavigationContainer>

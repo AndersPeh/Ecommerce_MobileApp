@@ -7,11 +7,6 @@
     "icon": "./assets/splashScreen.png",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
-    "splash": {
-      "image": "./assets/splashScreen.png",
-      "resizeMode": "repeat",
-      "backgroundColor": "#FFDAB9"
-    },
     "ios": {
       "supportsTablet": true
     },

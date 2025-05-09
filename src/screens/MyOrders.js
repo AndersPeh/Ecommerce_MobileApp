@@ -24,9 +24,6 @@ export default function MyOrders({navigation}) {
   const [showPaid, setShowPaid] = useState(true);
   const [showDelivered, setShowDelivered] = useState(true);
 
-// loading for fetch
-  const [isLoading, setIsLoading] = useState(false);
-
 // useMemo elements wont be changed when the screen re-renders. it will only be updated when there is changes in ordersInfo.
 // if ordersInfo remains the same after re-render, useMemo will return the 
 // previously calculated categorisedOrders object.
@@ -44,70 +41,76 @@ export default function MyOrders({navigation}) {
 
   }, [ordersInfo]);
 
-// segregate orders in 3 sections for new, paid and delivered.
-  const sections = useMemo(()=> {
+  const newOrdersSectionData = useMemo(()=>({
 
-  // initialise eachSection as empty array, each object in this array will represent a section in the list.
-      const ordersSection = [];
+    title: 'New Orders',
   
-      ordersSection.push({
+// display new orders if it is pressed.
+    data: showNew ? categorisedOrders.newOrdersList : [],
+
+// showNew decides if new orders and and different caret icons will be displayed.
+    showContentAndIcon: showNew,
+
+// will be used in button to enable/ disable setShowNew
+    setShowContentAndIcon: setShowNew,
+
+// display number of products in each order.
+    eachOrderNumberOfProducts: categorisedOrders.newOrdersList.length,
+
+// for no orders message
+    noOrders: showNew && categorisedOrders.newOrdersList.length === 0,
+
+// when there is any changes in categorisedOrders, it should update ordersSection to reflect correct orders.
+// when there is any changes in showNew, it should update ordersSection to
+// show or hide orders.
+  }),  [categorisedOrders.newOrdersList, showNew]);
+
+
+  const paidOrdersSectionData = useMemo(()=>({
+
+    title: 'Paid Orders',
   
-        title: 'New Orders',
+    data: showPaid ? categorisedOrders.paidOrdersList : [],
+
+    showContentAndIcon: showPaid,
+
+    setShowContentAndIcon: setShowPaid,
+
+    eachOrderNumberOfProducts: categorisedOrders.paidOrdersList.length,
+
+    noOrders: showPaid && categorisedOrders.paidOrdersList.length === 0,
+
+// when there is any changes in categorisedOrders, it should update ordersSection to reflect correct orders.
+// when there is any changes in showPaid, it should update ordersSection to
+// show or hide orders.
+  }),  [categorisedOrders.paidOrdersList, showPaid]);
+
+  const deliveredOrdersSectionData = useMemo(()=>({
+
+    title: 'Delivered Orders',
   
-  // display new orders if it is pressed.
-        data: showNew ? categorisedOrders.newOrdersList : [],
+    data: showDelivered ? categorisedOrders.deliveredOrdersList : [],
+
+    showContentAndIcon: showDelivered,
+
+    setShowContentAndIcon: setShowDelivered,
+
+    eachOrderNumberOfProducts: categorisedOrders.deliveredOrdersList.length,
+
+    noOrders: showDelivered && categorisedOrders.deliveredOrdersList.length === 0,
+
+// when there is any changes in categorisedOrders, it should update ordersSection to reflect correct orders.
+// when there is any changes in showDelivered, it should update ordersSection to
+// show or hide orders.
+  }),  [categorisedOrders.deliveredOrdersList, showDelivered]);
+
+
+// put 3 sections (new, paid and delivered) objects into an array.
+  const sections = useMemo(()=> [
   
-  // showNew decides if new orders and and different caret icons will be displayed.
-        showContentAndIcon: showNew,
-  
-  // will be used in button to enable/ disable setShowNew
-        setShowContentAndIcon: setShowNew,
-  
-  // display number of products in each order.
-        eachOrderNumberOfProducts: categorisedOrders.newOrdersList.length,
-  
-  // for no orders message
-        noOrders: showNew && categorisedOrders.newOrdersList.length === 0,
-      });
-  
-  
-      ordersSection.push({
-  
-        title: 'Paid Orders',
-  
-        data: showPaid ? categorisedOrders.paidOrdersList : [],
-  
-        showContentAndIcon: showPaid,
-  
-        setShowContentAndIcon: setShowPaid,
-  
-        eachOrderNumberOfProducts: categorisedOrders.paidOrdersList.length,
-  
-        noOrders: showPaid && categorisedOrders.paidOrdersList.length === 0,
-      });
-  
-      ordersSection.push({
-  
-        title: 'Delivered Orders',
-  
-        data: showDelivered ? categorisedOrders.deliveredOrdersList : [],
-  
-        showContentAndIcon: showDelivered,
-  
-        setShowContentAndIcon: setShowDelivered,
-  
-        eachOrderNumberOfProducts: categorisedOrders.deliveredOrdersList.length,
-  
-        noOrders: showDelivered && categorisedOrders.deliveredOrdersList.length === 0,
-      });
-  
-  // it will be a section with different order categories.
-      return ordersSection;
-  
-  // when there is any changes in categorisedOrders, it should update ordersSection to reflect correct orders.
-  // when there is any changes in showNew, showPaid, showDelivered, it should update ordersSection to
-  // show or hide orders..
-  }, [categorisedOrders, showNew, showPaid, showDelivered]);
+    newOrdersSectionData, paidOrdersSectionData, deliveredOrdersSectionData,
+
+  ], [newOrdersSectionData, paidOrdersSectionData, deliveredOrdersSectionData]);
   
 
   const paymentConfirmed = async (id) => {
@@ -172,19 +175,19 @@ export default function MyOrders({navigation}) {
 
   // Make caret up icon.
   const caretUpIcon = <Ionicons name="arrow-up-circle"
-    size={20}
-    color="#004D66"
+    size={25}
+    color="black"
     style={ordersStyle.caretIcon}    
   />;
 
   // Make caret down icon.
   const caretDownIcon = <Ionicons name="arrow-down-circle"
-    size={20}
-    color="#004D66"
+    size={25}
+    color="black"
     style={ordersStyle.caretIcon}
   />;
 
-  // collapsible order row for new, paid and delivered orders.
+  // collapsible order row for each order in new, paid and delivered orders.
   const OrderRow = ({order}) => {
 
   // order row is collapsed by default.
@@ -221,6 +224,7 @@ export default function MyOrders({navigation}) {
       await paymentConfirmed(order.id);
 
       setIsUpdating(false);
+
     };
 
   // set isUpdating true when it is processing delivery confirmation.
@@ -233,21 +237,18 @@ export default function MyOrders({navigation}) {
       await deliveryConfirmed(order.id);
 
       setIsUpdating(false);
+
     };
 
   // if there is order_items, set it as productsInOrder. if no order, then empty array.
     const productsInOrder = order.order_items || [];
-
-    if(isExpanded){
-      console.log(`OrderRow (ID:${order.id}) - productsInOrder keys:`, JSON.stringify(
-        productsInOrder.map(product => product.prodID || product.id)));
-    }
 
     return (
       <View style={ordersStyle.orderItemContainer} >
 
   {/* default is collapsed, expand on first click, collapse on next click. */}
         <Pressable onPress={()=> setIsExpanded(!isExpanded)} style={ordersStyle.orderCompactRowPressable}>
+
           <Text style={ordersStyle.orderCompactText}>ID: {order.id}</Text>
           <Text style={ordersStyle.orderCompactText}>Products: {order.item_numbers}</Text>
           <Text style={ordersStyle.orderCompactText}>Total: ${(order.total_price/ 100).toFixed(2)}</Text>
@@ -304,8 +305,8 @@ export default function MyOrders({navigation}) {
       </View>
     );};
 
-// when user does not have any order except when it is loading.
-  if((ordersInfo.length===0 || !ordersInfo) && !isLoading){
+// when user does not have any order, show no order.
+  if(ordersInfo.length===0 || !ordersInfo){
     return (
       <View style={pageBackground}>
         <View style={ordersStyle.titleContainer}>
@@ -316,21 +317,6 @@ export default function MyOrders({navigation}) {
       </View>
     )
   };
-
-
-// isLoading runs when loading orders including first time loading orders.
-  if(isLoading && (!ordersInfo || ordersInfo.length===0)){
-    return(
-      <View style={[pageBackground, ordersStyle.loadingContainer]}>
-
-        <ActivityIndicator size='large' color="#F5E8C7"/>
-        <Text style={ordersStyle.loadingText}>Loading Your Orders...</Text>
-        <StatusBar style="auto" />
-
-      </View>
-    );
-  };
-
 
 
   return (
@@ -391,28 +377,12 @@ export default function MyOrders({navigation}) {
             </Pressable>
       )}
 
-
-// header of the page, before the section list.
-        ListHeaderComponent={
-          <>
-
-
-            {isLoading && ordersInfo && ordersInfo.length > 0 && <ActivityIndicator
-              color='#FFBF00'
-              style={{marginVertical:5}}
-            
-            />}
-
-          </>
-        }
-
-        // contentContainerStyle={{paddingHorizontal: ordersStyle.categorySection.marginHorizontal}}
-
+// style to separate every section (new, paid, delivered)
         SectionSeparatorComponent={()=>(
           <View style={{height: ordersStyle.categorySection.marginBottom}}/>
         )}
 
-
+// style of how the page can be scrolled.
         style={ordersStyle.mainScrollContainer}
       />
       

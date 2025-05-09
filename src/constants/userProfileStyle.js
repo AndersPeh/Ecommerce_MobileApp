@@ -86,7 +86,7 @@ export default {
         justifyContent:'center',
         alignItems:'center',
         flex:1,
-        bottom:220,
+        bottom:195,
     },
     updateContainerView:{
         width:'90%',

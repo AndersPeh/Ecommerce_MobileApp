@@ -7,8 +7,9 @@ import buttonStyle from '../constants/buttonStyle';
 import cartStyle from '../constants/cartStyle';
 import pageBackground from '../constants/pageBackground';
 import { saveCart, fetchCart } from '../redux/cartThunks';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { createOrder } from '../redux/orderThunks';
+import loadingMessage from '../constants/loadingMessage';
 
 export default function MyCart({navigation}) {
 // exactly how it was define in store.js and cartSlice. cart is an object with items array
@@ -27,9 +28,24 @@ export default function MyCart({navigation}) {
 // unless it is updated manually.
   const previousToken = useRef(token);
 
+// false by default.
+  const [loading, setLoading] = useState(false);
+
+// when the app is loading, show loading message.
+  if (loading){
+    return (
+      <View style={loadingMessage.body}>
+          <ActivityIndicator size="large" color="#F5E8C7" />
+          <Text style={loadingMessage.text}>Loading...</Text>
+      </View>
+    );
+  }
+
 // when user logs in, retrieve cart products from the server, pass it to setCart
 // setCart will then provide cart products of the user
   useEffect(()=>{
+
+    setLoading(true);
 // when the user has signed out, dont save
     if(!token){
       console.log("MyCart: Token is required for fetching Cart.");
@@ -46,7 +62,9 @@ export default function MyCart({navigation}) {
 
       .catch(e=>{
         console.error("MyCart: Failed to fetch cart:", e);
-      });
+      })
+
+      .finally(setLoading(false));
     
 // useEffect is triggered when there is changes in token.
 // token and dispatch are included in the dependency to use it inside useEffect.
@@ -57,6 +75,8 @@ export default function MyCart({navigation}) {
 // when a new product is added, any product is removed, the quantity of any
 // product is increased/ decreased, save it to the server.
   useEffect(()=>{
+
+    setLoading(true);
 // find out if token has changed.
     const tokenChanged = previousToken.current !== token;
     
@@ -78,13 +98,16 @@ export default function MyCart({navigation}) {
       return;
     };
 
+
 // whenever there is any changes cartProducts, dispatch saveCart 
 // to save cartProducts to the server.
     dispatch(saveCart({products: cartProducts, token}))
       .unwrap()
       .catch(e=>{
         console.error("MyCart: Failed to save cart:", e);
-      });
+      })
+      .finally(setLoading(false));
+
 
 // useEffect is triggered when there is changes in cartProducts.
 // token and dispatch are included in the dependency to use it inside useEffect.
@@ -128,6 +151,7 @@ export default function MyCart({navigation}) {
 
   const checkoutNewOrder = () => {
 
+    setLoading(true);
     if(!cartProducts || cartProducts.length===0){
       Alert.alert('Empty Cart', 'Please add some products to checkout.');
       return;
@@ -162,7 +186,8 @@ export default function MyCart({navigation}) {
       .catch((e) => {
         Alert.alert('Checkout Failed', e || 'Checkout Failed', 'Please try again.');
         console.error('Checkout error:', e);
-      });
+      })
+      .finally(setLoading(false));
   };
 
 

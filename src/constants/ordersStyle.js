@@ -67,9 +67,7 @@ export default {
         color: 'black',
     },
     orderItemContainer: { 
-        // backgroundColor: 'white', 
         marginTop: 5,
-        // borderRadius: 8,
         marginHorizontal:16,
         
 
@@ -82,7 +80,8 @@ export default {
         paddingHorizontal: 12,
         backgroundColor: '#D1F6FF',
         marginTop:15,
-        // borderRadius:8,
+        borderTopLeftRadius: 8,
+        borderTopRightRadius: 8,      
     },
     orderCompactText: {
         fontSize: 16,
@@ -94,6 +93,8 @@ export default {
     orderExpandedDetailsContainer: {
         padding: 10,
         backgroundColor: 'white', 
+        borderBottomLeftRadius: 8,
+        borderBottomRightRadius: 8,    
     },
     eachProductRow: { 
         flexDirection: 'row',
