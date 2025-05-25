@@ -9,11 +9,48 @@ An e-commerce platform that allows users to browse products, manage a shopping c
 *   **State Management:** Redux Toolkit
 *   **Backend:** The backend for this project is provided by Griffith University and is located in the `fake-store-server` directory. This Express.js server uses SQLite for data storage and provides RESTful APIs for users, cart, and orders.
 
+## App Screenshots
+
 <table>
   <tr>
     <td><img src="App_Screenshots/splash.png" width="100%"></td>
+    <td><img src="App_Screenshots/signIn.png" width="100%"></td>
+    <td><img src="App_Screenshots/signUp.png" width="100%"></td>
+    <td><img src="App_Screenshots/protectedTabs.png" width="100%"></td>
+  </tr>
+</table>
+
+<table>
+  <tr>
+    <td><img src="App_Screenshots/userProfile.png" width="100%"></td>
+    <td><img src="App_Screenshots/updateForm.png" width="100%"></td>
+    <td><img src="App_Screenshots/emptyCart.png" width="100%"></td>
+    <td><img src="App_Screenshots/emptyOrder.png" width="100%"></td>
+  </tr>
+</table>
+
+<table>
+  <tr>
     <td><img src="App_Screenshots/categories.png" width="100%"></td>
     <td><img src="App_Screenshots/products.png" width="100%"></td>
+    <td><img src="App_Screenshots/details.png" width="100%"></td>
+    <td><img src="App_Screenshots/successAddedCart.png" width="100%"></td>
+  </tr>
+</table>
+
+<table>
+  <tr>
+    <td><img src="App_Screenshots/myCart.png" width="100%"></td>
+    <td><img src="App_Screenshots/checkoutSuccess.png" width="100%"></td>
+    <td><img src="App_Screenshots/newOrder.png" width="100%"></td>
+    <td><img src="App_Screenshots/paidOrder.png" width="100%"></td>
+  </tr>
+</table>
+
+<table>
+  <tr>
+    <td><img src="App_Screenshots/deliveredOrder.png" width="100%" height="25%"></td>
+    <td><img src="App_Screenshots/myOrders.png" width="100%" height="25%"></td>
   </tr>
 </table>
 
