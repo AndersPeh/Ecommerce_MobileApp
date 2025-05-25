@@ -9,6 +9,14 @@ An e-commerce platform that allows users to browse products, manage a shopping c
 *   **State Management:** Redux Toolkit
 *   **Backend:** The backend for this project is provided by Griffith University and is located in the `fake-store-server` directory. This Express.js server uses SQLite for data storage and provides RESTful APIs for users, cart, and orders.
 
+<table>
+  <tr>
+    <td><img src="App_Screenshots/splash.png" width="100%"></td>
+    <td><img src="AppPics/categories.png" width="100%"></td>
+    <td><img src="AppPics/products.png" width="100%"></td>
+  </tr>
+</table>
+
 ## APIs Used
 
 *   **Fake Store API (`https://fakestoreapi.com/`):** Provides product information, categories, and product details.
@@ -18,16 +26,6 @@ An e-commerce platform that allows users to browse products, manage a shopping c
     *   Provides persistent shopping cart functionality.
     *   Manages order creation, retrieval, and status updates (e.g., new, paid, delivered) using an SQLite database.
     *   API documentation for this server is available via Swagger at `http://localhost:3000/api-docs` when the server is running.
-
-<table>
-  <tr>
-    <td><img src="App_Screenshots/splash" width="100%"></td>
-    <td><img src="AppPics/categories" width="100%"></td>
-    <td><img src="AppPics/products" width="100%"></td>
-  </tr>
-</table>
-
-
 
 ## Features
 
