@@ -12,8 +12,8 @@ An e-commerce platform that allows users to browse products, manage a shopping c
 <table>
   <tr>
     <td><img src="App_Screenshots/splash.png" width="100%"></td>
-    <td><img src="AppPics/categories.png" width="100%"></td>
-    <td><img src="AppPics/products.png" width="100%"></td>
+    <td><img src="App_Screenshots/categories.png" width="100%"></td>
+    <td><img src="App_Screenshots/products.png" width="100%"></td>
   </tr>
 </table>
 
