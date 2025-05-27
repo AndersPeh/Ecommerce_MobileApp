@@ -43,12 +43,12 @@ An e-commerce platform that allows users to browse products, manage a shopping c
     <td><img src="App_Screenshots/myCart.png" width="100%"></td>
     <td><img src="App_Screenshots/checkoutSuccess.png" width="100%"></td>
     <td><img src="App_Screenshots/newOrder.png" width="100%"></td>
-    <td><img src="App_Screenshots/paidOrder.png" width="100%"></td>
   </tr>
 </table>
 
 <table>
   <tr>
+    <td><img src="App_Screenshots/paidOrder.png" width="100%"></td>
     <td><img src="App_Screenshots/deliveredOrder.png" width="100%" height="25%"></td>
     <td><img src="App_Screenshots/myOrders.png" width="100%" height="25%"></td>
   </tr>
