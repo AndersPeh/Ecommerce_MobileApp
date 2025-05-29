@@ -12,7 +12,7 @@ An e-commerce platform that allows users to browse products, manage a shopping c
 ## App Screenshots
 
 <table>
-  <tr>
+  <tr align="center">
     <td><p>Splash Screen</p><img src="App_Screenshots/splash.png" width="100%"></td>
     <td><p>Sign In Screen</p><img src="App_Screenshots/signIn.png" width="100%"></td>
     <td><p>Sign Up Screen</p><img src="App_Screenshots/signUp.png" width="100%"></td>
@@ -21,7 +21,7 @@ An e-commerce platform that allows users to browse products, manage a shopping c
 </table>
 
 <table>
-  <tr>
+  <tr align="center">
     <td><p>User Profile Screen</p><img src="App_Screenshots/userProfile.png" width="100%"></td>
     <td><p>Update Profile Form</p><img src="App_Screenshots/updateForm.png" width="100%"></td>
     <td><p>Empty Cart Screen</p><img src="App_Screenshots/emptyCart.png" width="100%"></td>
@@ -30,7 +30,7 @@ An e-commerce platform that allows users to browse products, manage a shopping c
 </table>
 
 <table>
-  <tr>
+  <tr align="center">
     <td><p>Categories Screen</p><img src="App_Screenshots/categories.png" width="100%"></td>
     <td><p>Products Screen</p><img src="App_Screenshots/products.png" width="100%"></td>
     <td><p>Product Details Screen</p><img src="App_Screenshots/details.png" width="100%"></td>
@@ -39,7 +39,7 @@ An e-commerce platform that allows users to browse products, manage a shopping c
 </table>
 
 <table>
-  <tr>
+  <tr align="center">
     <td><p>My Cart Screen</p><img src="App_Screenshots/myCart.png" width="100%"></td>
     <td><p>Checkout Success Notification</p><img src="App_Screenshots/checkoutSuccess.png" width="100%"></td>
     <td><p>New Order in My Orders</p><img src="App_Screenshots/newOrder.png" width="100%"></td>
@@ -47,7 +47,7 @@ An e-commerce platform that allows users to browse products, manage a shopping c
 </table>
 
 <table>
-  <tr>
+  <tr align="center">
     <td><p>Paid Order in My Orders</p><img src="App_Screenshots/paidOrder.png" width="100%"></td>
     <td><p>Delivered Order in My Orders</p><img src="App_Screenshots/deliveredOrder.png" width="100%" height="25%"></td>
     <td><p>My Orders Screen Overview</p><img src="App_Screenshots/myOrders.png" width="100%" height="25%"></td>
