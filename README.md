@@ -14,8 +14,8 @@ An e-commerce platform that allows users to browse products, manage a shopping c
 <table>
   <tr align="center">
     <td><p>Splash Screen</p><img src="App_Screenshots/splash.png" width="100%"></td>
-    <td><p>Sign In Screen</p><img src="App_Screenshots/signIn.png" width="100%"></td>
-    <td><p>Sign Up Screen</p><img src="App_Screenshots/signUp.png" width="100%"></td>
+    <td><p>Sign In Form</p><img src="App_Screenshots/signIn.png" width="100%"></td>
+    <td><p>Sign Up Form</p><img src="App_Screenshots/signUp.png" width="100%"></td>
     <td><p>Protected Tabs Warning</p><img src="App_Screenshots/protectedTabs.png" width="100%"></td>
   </tr>
 </table>
@@ -34,7 +34,7 @@ An e-commerce platform that allows users to browse products, manage a shopping c
     <td><p>Categories Screen</p><img src="App_Screenshots/categories.png" width="100%"></td>
     <td><p>Products Screen</p><img src="App_Screenshots/products.png" width="100%"></td>
     <td><p>Product Details Screen</p><img src="App_Screenshots/details.png" width="100%"></td>
-    <td><p>Success Adding to Cart Notification</p><img src="App_Screenshots/successAddedCart.png" width="100%"></td>
+    <td><p>Success Added to Cart Notification</p><img src="App_Screenshots/successAddedCart.png" width="100%"></td>
   </tr>
 </table>
 
@@ -42,15 +42,23 @@ An e-commerce platform that allows users to browse products, manage a shopping c
   <tr align="center">
     <td><p>My Cart Screen</p><img src="App_Screenshots/myCart.png" width="100%"></td>
     <td><p>Checkout Success Notification</p><img src="App_Screenshots/checkoutSuccess.png" width="100%"></td>
-    <td><p>New Order in My Orders</p><img src="App_Screenshots/newOrder.png" width="100%"></td>
+    <td><p>New Order in My Orders (Pay Button)</p><img src="App_Screenshots/newOrder.png" width="100%"></td>
   </tr>
 </table>
 
 <table>
   <tr align="center">
-    <td><p>Paid Order in My Orders</p><img src="App_Screenshots/paidOrder.png" width="100%"></td>
+    <td><p>Paid Order in My Orders (Receive Button)</p><img src="App_Screenshots/paidOrder.png" width="100%"></td>
     <td><p>Delivered Order in My Orders</p><img src="App_Screenshots/deliveredOrder.png" width="100%" height="25%"></td>
     <td><p>My Orders Screen Overview</p><img src="App_Screenshots/myOrders.png" width="100%" height="25%"></td>
+  </tr>
+</table>
+<table>
+  <tr align="center">
+    <td><p>Invalid Email Error from Server</p><img src="App_Screenshots/errorSignUpEmail.png" width="100%"></td>
+    <td><p>Password Rules Error from Server</p><img src="App_Screenshots/errorSignUpPwd.png" width="100%"></td>
+    <td><p>Password Checking Error from Server</p><img src="App_Screenshots/signinError.png" width="100%"></td>
+    <td><p>Required Fields Error from Server</p><img src="App_Screenshots/updateError.png" width="100%"></td>
   </tr>
 </table>
 
