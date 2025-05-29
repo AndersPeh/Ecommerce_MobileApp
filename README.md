@@ -55,8 +55,8 @@ An e-commerce platform that allows users to browse products, manage a shopping c
 </table>
 <table>
   <tr align="center">
-    <td><p>Invalid Email Error from Server</p><img src="App_Screenshots/errorSignUpEmail.png" width="100%"></td>
-    <td><p>Password Rules Error from Server</p><img src="App_Screenshots/errorSignUpPwd.png" width="100%"></td>
+    <td><p>Email Validation Error from Server</p><img src="App_Screenshots/errorSignUpEmail.png" width="100%"></td>
+    <td><p>Password Validation Error from Server</p><img src="App_Screenshots/errorSignUpPwd.png" width="100%"></td>
     <td><p>Password Checking Error from Server</p><img src="App_Screenshots/signinError.png" width="100%"></td>
     <td><p>Required Fields Error from Server</p><img src="App_Screenshots/updateError.png" width="100%"></td>
   </tr>
